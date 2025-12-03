@@ -492,11 +492,12 @@ async function handleRoute(request, { params }) {
 
       const orders = await db.collection('orders')
         .find({ userId: decoded.userId })
+        .project({ _id: 0 }) // Exclude MongoDB _id
         .sort({ createdAt: -1 })
+        .limit(100) // Limit user orders for performance
         .toArray();
 
-      const cleanedOrders = orders.map(({ _id, ...rest }) => rest);
-      return handleCORS(NextResponse.json({ orders: cleanedOrders }));
+      return handleCORS(NextResponse.json({ orders: orders }));
     }
 
     // ==================== CONTACT ROUTES ====================
