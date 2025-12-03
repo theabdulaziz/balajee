@@ -14,12 +14,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Package, ShoppingCart, Users, Plus, Edit, Trash2 } from 'lucide-react';
 
+import OrderEditModal from '@/components/OrderEditModal';
+
 function AdminContent() {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [editingOrder, setEditingOrder] = useState(null);
+  const [showOrderEditModal, setShowOrderEditModal] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
