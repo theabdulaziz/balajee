@@ -12,7 +12,7 @@ async function connectToMongo() {
   if (!client) {
     client = new MongoClient(process.env.MONGO_URL);
     await client.connect();
-    db = client.db('balajee_trade_link');
+    db = client.db(process.env.DB_NAME || 'balajee_trade_link');
   }
   return db;
 }
