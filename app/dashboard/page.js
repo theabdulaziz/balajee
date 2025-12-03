@@ -140,11 +140,27 @@ function DashboardContent() {
                 <p className="mt-4 text-muted-foreground">Loading...</p>
               </div>
             ) : (
-              <OrderTable orders={orders.slice(0, 5)} />
+              <OrderTable 
+                orders={orders.slice(0, 5)} 
+                onViewOrder={(order) => {
+                  setSelectedOrder(order);
+                  setShowOrderDetails(true);
+                }}
+              />
             )}
           </CardContent>
         </Card>
       </div>
+
+      {/* Order Details Modal */}
+      <OrderDetailsModal
+        open={showOrderDetails}
+        onClose={() => {
+          setShowOrderDetails(false);
+          setSelectedOrder(null);
+        }}
+        order={selectedOrder}
+      />
     </div>
   );
 }
