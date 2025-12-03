@@ -461,6 +461,18 @@ function AdminContent() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Order Edit Modal */}
+      <OrderEditModal
+        open={showOrderEditModal}
+        onClose={() => {
+          setShowOrderEditModal(false);
+          setEditingOrder(null);
+        }}
+        order={editingOrder}
+        products={products}
+        onSave={handleSaveOrder}
+      />
     </div>
   );
 }
