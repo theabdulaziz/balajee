@@ -158,8 +158,20 @@ export default function ContactPage() {
                   <div className="flex items-start space-x-4">
                     <MapPin className="h-6 w-6 text-primary mt-1" />
                     <div>
-                      <h3 className="font-semibold text-lg mb-2">Address</h3>
-                      <p className="text-muted-foreground">United States</p>
+                      <h3 className="font-semibold text-lg mb-2">Office Address</h3>
+                      <p className="text-muted-foreground">805 South Main Street<br />Taylor, PA 18517</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <MapPin className="h-6 w-6 text-primary mt-1" />
+                    <div>
+                      <h3 className="font-semibold text-lg mb-2">Warehouse Address</h3>
+                      <p className="text-muted-foreground">1318 Sen Robert Mellow Dr<br />Jessup, PA 18434</p>
                     </div>
                   </div>
                 </CardContent>
@@ -171,19 +183,11 @@ export default function ContactPage() {
                     <Phone className="h-6 w-6 text-primary mt-1" />
                     <div>
                       <h3 className="font-semibold text-lg mb-2">Phone</h3>
-                      <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <Mail className="h-6 w-6 text-primary mt-1" />
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">Email</h3>
-                      <p className="text-muted-foreground">info@balajeetradelink.com</p>
+                      <p className="text-muted-foreground">
+                        Office: 570-562-2777<br />
+                        Fax: 570-562-2775<br />
+                        Sales: 443-856-8505
+                      </p>
                     </div>
                   </div>
                 </CardContent>
