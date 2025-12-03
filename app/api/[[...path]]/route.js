@@ -2,6 +2,7 @@ import { MongoClient } from 'mongodb';
 import { v4 as uuidv4 } from 'uuid';
 import { NextResponse } from 'next/server';
 import { hashPassword, comparePassword, generateToken, verifyToken, getTokenFromHeader } from '@/lib/auth';
+import { productSeeds } from '@/lib/productSeeds';
 
 // MongoDB connection
 let client;
