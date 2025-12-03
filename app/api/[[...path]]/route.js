@@ -622,11 +622,12 @@ async function handleRoute(request, { params }) {
     if (route === '/admin/orders' && method === 'GET') {
       const orders = await db.collection('orders')
         .find({})
+        .project({ _id: 0 }) // Exclude MongoDB _id
         .sort({ createdAt: -1 })
+        .limit(500) // Limit to prevent performance issues
         .toArray();
 
-      const cleanedOrders = orders.map(({ _id, ...rest }) => rest);
-      return handleCORS(NextResponse.json({ orders: cleanedOrders }));
+      return handleCORS(NextResponse.json({ orders: orders }));
     }
 
     // PUT /api/admin/orders?id=xxx - Update order status
