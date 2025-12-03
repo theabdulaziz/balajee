@@ -133,6 +133,39 @@ function AdminContent() {
     }
   };
 
+  const handleEditOrder = (order) => {
+    setEditingOrder(order);
+    setShowOrderEditModal(true);
+  };
+
+  const handleSaveOrder = async (updatedOrder) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/admin/orders?id=${updatedOrder.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          items: updatedOrder.items,
+          shippingCharge: updatedOrder.shippingCharge,
+          notes: updatedOrder.notes,
+          total: updatedOrder.total,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to update order');
+
+      setMessage('Order updated successfully!');
+      setShowOrderEditModal(false);
+      setEditingOrder(null);
+      fetchData();
+    } catch (error) {
+      setMessage('Error: ' + error.message);
+    }
+  };
+
   const handleUpdateOrderStatus = async (orderId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
