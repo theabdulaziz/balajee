@@ -36,6 +36,12 @@ async function seedData(db) {
   const productsCount = await db.collection('products').countDocuments();
   
   if (productsCount === 0) {
+    await db.collection('products').insertMany(productSeeds);
+    console.log(`Seeded ${productSeeds.length} products from Balajee Trade Link inventory`);
+  }
+  
+  // Legacy sample products (keeping for reference, not used)
+  if (false) {
     const sampleProducts = [
       // Noodles
       {
