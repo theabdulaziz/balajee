@@ -3,11 +3,14 @@
 import { useState, useEffect } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import OrderTable from '@/components/OrderTable';
+import OrderDetailsModal from '@/components/OrderDetailsModal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 function OrdersContent() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
 
   useEffect(() => {
     fetchOrders();
