@@ -1,16 +1,22 @@
-import './globals.css'
+import './globals.css';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export const metadata = {
-  title: 'Next.js MongoDB Template',
-  description: 'A simple template with App Router, MongoDB, and shadcn/ui',
-}
+  title: 'Balajee Trade Link - Wholesale South-Asian Grocery',
+  description: 'Premium wholesale importer of authentic South-Asian grocery products in the United States',
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        {children}
+      <body className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
-  )
+  );
 }
