@@ -2,27 +2,27 @@ export default function FeatureBrands() {
   const brands = [
     {
       name: 'Wai Wai',
-      image: 'https://balajeetradelink.com/wp-content/uploads/2021/01/waiwai.jpg',
+      image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=400&fit=crop',
     },
     {
       name: 'Current',
-      image: 'https://balajeetradelink.com/wp-content/uploads/2025/11/Current-Logo.png',
+      image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&h=400&fit=crop',
     },
     {
       name: 'Rum Pum',
-      image: 'https://balajeetradelink.com/wp-content/uploads/2025/11/Rumpum-Logo.jpg',
+      image: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=400&h=400&fit=crop',
     },
     {
       name: 'Druk',
-      image: 'https://balajeetradelink.com/wp-content/uploads/2021/01/druk.jpg',
+      image: 'https://images.unsplash.com/photo-1604999333679-b86d54738315?w=400&h=400&fit=crop',
     },
     {
       name: 'Rato Bhale',
-      image: 'https://balajeetradelink.com/wp-content/uploads/2025/11/Screenshot-2025-11-04-131607.jpg',
+      image: 'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=400&h=400&fit=crop',
     },
     {
       name: 'Aama Ko Achar',
-      image: 'https://balajeetradelink.com/wp-content/uploads/2025/11/AKA.jpg',
+      image: 'https://images.unsplash.com/photo-1596040033229-a0b3b6087c97?w=400&h=400&fit=crop',
     },
   ];
 
