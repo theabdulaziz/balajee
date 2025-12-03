@@ -32,7 +32,7 @@ export default function Footer() {
                 570-562-2777
               </li>
               <li className="flex items-center text-gray-400">
-                <Fax className="h-4 w-4 mr-2 flex-shrink-0" />
+                <Phone className="h-4 w-4 mr-2 flex-shrink-0" />
                 570-562-2775 (Fax)
               </li>
             </ul>
