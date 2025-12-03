@@ -49,10 +49,26 @@ function OrdersContent() {
                 <p className="mt-4 text-muted-foreground">Loading orders...</p>
               </div>
             ) : (
-              <OrderTable orders={orders} />
+              <OrderTable 
+                orders={orders}
+                onViewOrder={(order) => {
+                  setSelectedOrder(order);
+                  setShowOrderDetails(true);
+                }}
+              />
             )}
           </CardContent>
         </Card>
+
+        {/* Order Details Modal */}
+        <OrderDetailsModal
+          open={showOrderDetails}
+          onClose={() => {
+            setShowOrderDetails(false);
+            setSelectedOrder(null);
+          }}
+          order={selectedOrder}
+        />
       </div>
     </div>
   );
