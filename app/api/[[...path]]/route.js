@@ -440,9 +440,12 @@ async function handleRoute(request, { params }) {
     
     // GET /api/products - Public
     if (route === '/products' && method === 'GET') {
-      const products = await db.collection('products').find({}).toArray();
-      const cleanedProducts = products.map(({ _id, ...rest }) => rest);
-      return handleCORS(NextResponse.json({ products: cleanedProducts }));
+      const products = await db.collection('products')
+        .find({})
+        .project({ _id: 0 }) // Exclude MongoDB _id
+        .limit(1000) // Limit to prevent performance issues
+        .toArray();
+      return handleCORS(NextResponse.json({ products: products }));
     }
 
     // ==================== ORDER ROUTES ====================
