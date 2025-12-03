@@ -351,9 +351,7 @@ async function seedData(db) {
         imageUrl: 'https://balajeetradelink.com/wp-content/uploads/2025/11/Screenshot-2025-11-12-222950.png',
       },
     ];
-
-    await db.collection('products').insertMany(sampleProducts);
-    console.log('Seeded sample products');
+    // Legacy sample products not used anymore - using productSeeds from inventory Excel
   }
 
   // Create admin user if doesn't exist
