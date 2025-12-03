@@ -47,19 +47,19 @@ export default function ProductsPage() {
     }
   };
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (product, quantity = 1) => {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const existingItem = cart.find(item => item.id === product.id);
 
     if (existingItem) {
-      existingItem.quantity += 1;
+      existingItem.quantity += quantity;
     } else {
-      cart.push({ ...product, quantity: 1 });
+      cart.push({ ...product, quantity: quantity });
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
     window.dispatchEvent(new Event('cartUpdated'));
-    alert('Product added to cart!');
+    // Silent update - no popup
   };
 
   const categories = ['all', ...new Set(products.map(p => p.category))];
