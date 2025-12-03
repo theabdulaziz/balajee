@@ -631,7 +631,7 @@ async function handleRoute(request, { params }) {
       return handleCORS(NextResponse.json({ orders: orders }));
     }
 
-    // PUT /api/admin/orders?id=xxx - Update order status
+    // PUT /api/admin/orders?id=xxx - Update order (status, items, shipping, notes)
     if (route === '/admin/orders' && method === 'PUT') {
       const url = new URL(request.url);
       const orderId = url.searchParams.get('id');
@@ -641,15 +641,21 @@ async function handleRoute(request, { params }) {
       }
 
       const body = await request.json();
-      const { status } = body;
-
-      if (!status) {
-        return handleCORS(NextResponse.json({ error: 'Status required' }, { status: 400 }));
-      }
+      
+      // Build update object with only provided fields
+      const updateData = {};
+      if (body.status) updateData.status = body.status;
+      if (body.items) updateData.items = body.items;
+      if (body.shippingCharge !== undefined) updateData.shippingCharge = parseFloat(body.shippingCharge);
+      if (body.notes !== undefined) updateData.notes = body.notes;
+      if (body.total !== undefined) updateData.total = parseFloat(body.total);
+      
+      // Add updated timestamp
+      updateData.updatedAt = new Date();
 
       const result = await db.collection('orders').updateOne(
         { id: orderId },
-        { $set: { status } }
+        { $set: updateData }
       );
 
       if (result.matchedCount === 0) {
