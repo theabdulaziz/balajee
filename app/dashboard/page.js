@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import OrderTable from '@/components/OrderTable';
+import OrderDetailsModal from '@/components/OrderDetailsModal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ShoppingBag, Package, Clock } from 'lucide-react';
@@ -13,6 +14,8 @@ function DashboardContent() {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
