@@ -8,19 +8,19 @@ export default function OnlinePartners() {
     {
       name: 'Nepale Market',
       url: 'https://www.nepalemarket.com/',
-      logo: 'https://balajeetradelink.com/wp-content/uploads/2021/02/nepalemarket-logo.png',
+      logo: '/partners/nepalemarket-logo.png',
       description: 'Premier online marketplace for authentic Nepalese products and groceries'
     },
     {
       name: 'Mallko Store',
       url: 'https://mallko.store/',
-      logo: 'https://balajeetradelink.com/wp-content/uploads/2021/02/Mallko_logo_new_Green_and_yellow_360x.png',
+      logo: '/partners/mallko-logo.png',
       description: 'Your trusted source for South Asian specialty foods and household items'
     },
     {
       name: 'Dhaka Topi Online Store',
       url: 'https://dhakatopi.store/',
-      logo: 'https://balajeetradelink.com/wp-content/uploads/2025/11/Dhaka-Topi.png',
+      logo: '/partners/dhaka-topi-logo.png',
       description: 'Traditional Nepalese cultural items and authentic food products'
     }
   ];
