@@ -73,10 +73,10 @@ export default function ProductsPage() {
           <h1 className="text-4xl font-bold text-white mb-8 text-center">Our Products</h1>
 
           {/* Filters */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="bg-card border border-border rounded-lg shadow-md p-6 mb-8">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-grow">
-                <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
                 <Input
                   placeholder="Search by product name, SKU, or description..."
                   value={searchQuery}
@@ -115,7 +115,7 @@ export default function ProductsPage() {
                 </Button>
               </div>
             </div>
-            <div className="mt-4 text-sm text-gray-600">
+            <div className="mt-4 text-sm text-muted-foreground">
               Showing {filteredProducts.length} of {products.length} products
             </div>
           </div>
