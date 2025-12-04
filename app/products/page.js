@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import ProductCard from '@/components/ProductCard';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Search, Grid3x3, List } from 'lucide-react';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
