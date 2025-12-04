@@ -14,9 +14,19 @@ export default function HeroBanner() {
       </div>
       
       <div className="relative z-10 text-center text-white px-4 max-w-4xl">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg">
+        <div className="flex items-center justify-center mb-6">
+          <img 
+            src="/logo-btl.jpg" 
+            alt="Balajee Trade Link Logo" 
+            className="h-24 md:h-32 w-auto mr-4 rounded-lg shadow-2xl"
+          />
+          <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
+            Balajee Trade Link
+          </h1>
+        </div>
+        <h2 className="text-3xl md:text-5xl font-bold mb-6 drop-shadow-lg">
           The Original Taste of Nepal
-        </h1>
+        </h2>
         <p className="text-xl md:text-2xl mb-8 drop-shadow-md">
           Premium South-Asian Grocery Products for Your Business
         </p>
