@@ -92,8 +92,6 @@ export default function ForgotPassword() {
             </div>
           </form>
         </div>
-      </main>
-      <Footer />
     </div>
   );
 }
