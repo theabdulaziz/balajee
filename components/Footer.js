@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -8,7 +8,27 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-2xl font-bold mb-4">Balajee Trade Link</h3>
-            <p className="text-gray-400">Your trusted wholesale importer of authentic South-Asian grocery products since 2011.</p>
+            <p className="text-gray-400 mb-4">Your trusted wholesale importer of authentic South-Asian grocery products since 2011.</p>
+            <div className="flex space-x-4">
+              <a 
+                href="https://www.facebook.com/balajeetradelink" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-primary transition"
+                aria-label="Facebook"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://www.linkedin.com/company/balajee-trade-link" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-primary transition"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-5 w-5" />
+              </a>
+            </div>
           </div>
 
           <div>
@@ -16,6 +36,8 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><Link href="/" className="text-gray-400 hover:text-white transition">Home</Link></li>
               <li><Link href="/products" className="text-gray-400 hover:text-white transition">Products</Link></li>
+              <li><Link href="/online-partners" className="text-gray-400 hover:text-white transition">Online Partners</Link></li>
+              <li><Link href="/our-network" className="text-gray-400 hover:text-white transition">Our Network</Link></li>
               <li><Link href="/contact" className="text-gray-400 hover:text-white transition">Contact</Link></li>
             </ul>
           </div>
