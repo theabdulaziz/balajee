@@ -214,25 +214,94 @@ export default function AdminPlaceOrder() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
 
-                <div className="max-h-96 overflow-y-auto space-y-2">
+                <div className="max-h-[600px] overflow-y-auto space-y-2">
                   {filteredProducts.map(product => {
                     const price = selectedWarehouse === 'maspeth' ? product.maspethPrice : product.jessupPrice;
                     const stock = selectedWarehouse === 'maspeth' ? product.maspethQuantity : product.jessupQuantity;
+                    const cartItem = cart.find(item => item.id === product.id);
+                    const currentQty = cartItem ? cartItem.quantity : 0;
+                    
                     return (
-                      <div key={product.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
-                        <div className="flex-grow">
-                          <p className="font-medium text-sm">{product.name}</p>
+                      <div key={product.id} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                        <img
+                          src={product.imageUrl || 'https://images.unsplash.com/photo-1717082778340-6bcc3a24f33d?w=100&h=100&fit=crop'}
+                          alt={product.name}
+                          className="w-16 h-16 object-cover rounded flex-shrink-0"
+                          onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1717082778340-6bcc3a24f33d?w=100&h=100&fit=crop'; }}
+                        />
+                        <div className="flex-grow min-w-0">
+                          <p className="font-medium text-sm truncate">{product.name}</p>
                           <p className="text-xs text-gray-500">
-                            SKU: {product.sku} | ${price?.toFixed(2) || '0.00'} | Stock: {stock || 0}
+                            SKU: {product.sku}
+                          </p>
+                          <p className="text-sm font-semibold text-green-600">
+                            ${price?.toFixed(2) || '0.00'}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            Available: {stock || 0}
                           </p>
                         </div>
-                        <button
-                          onClick={() => addToCart(product)}
-                          disabled={!stock || stock <= 0}
-                          className="ml-4 px-3 py-1 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
-                        >
-                          Add
-                        </button>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <button
+                            onClick={() => {
+                              if (currentQty > 0) {
+                                if (currentQty === 1) {
+                                  setCart(cart.filter(item => item.id !== product.id));
+                                } else {
+                                  setCart(cart.map(item => 
+                                    item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item
+                                  ));
+                                }
+                              }
+                            }}
+                            disabled={currentQty === 0}
+                            className="px-2 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-30 disabled:cursor-not-allowed text-sm font-bold"
+                          >
+                            -
+                          </button>
+                          <input
+                            type="number"
+                            value={currentQty}
+                            onChange={(e) => {
+                              const newQty = Math.max(0, Math.min(stock, parseInt(e.target.value) || 0));
+                              if (newQty === 0) {
+                                setCart(cart.filter(item => item.id !== product.id));
+                              } else {
+                                const existing = cart.find(item => item.id === product.id);
+                                if (existing) {
+                                  setCart(cart.map(item => 
+                                    item.id === product.id ? { ...item, quantity: newQty } : item
+                                  ));
+                                } else {
+                                  setCart([...cart, { ...product, quantity: newQty, price }]);
+                                }
+                              }
+                            }}
+                            className="w-14 px-2 py-1 text-center border border-gray-300 rounded text-sm"
+                            min="0"
+                            max={stock}
+                          />
+                          <button
+                            onClick={() => {
+                              if (currentQty >= stock) {
+                                setMessage({ type: 'error', text: 'Maximum stock reached' });
+                                return;
+                              }
+                              const existing = cart.find(item => item.id === product.id);
+                              if (existing) {
+                                setCart(cart.map(item => 
+                                  item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+                                ));
+                              } else {
+                                setCart([...cart, { ...product, quantity: 1, price }]);
+                              }
+                            }}
+                            disabled={!stock || stock <= 0 || currentQty >= stock}
+                            className="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-bold"
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
                     );
                   })}
