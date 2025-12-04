@@ -15,12 +15,17 @@ export default function HeroBanner() {
       
       <div className="relative z-10 text-center text-white px-4 max-w-4xl">
         <div className="flex items-center justify-center mb-6">
-          <img 
-            src="/logo-btl.jpg" 
-            alt="Balajee Trade Link Logo" 
-            className="h-24 md:h-32 w-auto mr-4 drop-shadow-2xl"
-            style={{ mixBlendMode: 'screen' }}
-          />
+          <div className="relative h-24 md:h-32 w-24 md:w-32 mr-4">
+            <img 
+              src="/logo-btl.jpg" 
+              alt="Balajee Trade Link Logo" 
+              className="h-full w-full object-contain drop-shadow-2xl"
+              style={{ 
+                filter: 'drop-shadow(0 25px 25px rgba(0,0,0,0.8)) brightness(1.1) contrast(1.2)',
+                mixBlendMode: 'lighten'
+              }}
+            />
+          </div>
           <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
             Balajee Trade Link
           </h1>
