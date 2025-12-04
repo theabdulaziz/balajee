@@ -27,10 +27,14 @@ function AdminContent() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    price: '',
-    stock: '',
+    sku: '',
     category: '',
     brand: '',
+    unitSize: '',
+    maspethPrice: '',
+    maspethQuantity: '',
+    jessupPrice: '',
+    jessupQuantity: '',
     imageUrl: '',
   });
   const [message, setMessage] = useState('');
