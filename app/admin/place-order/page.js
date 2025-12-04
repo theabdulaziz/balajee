@@ -8,6 +8,7 @@ export default function AdminPlaceOrder() {
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState('');
+  const [selectedWarehouse, setSelectedWarehouse] = useState('maspeth');
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
