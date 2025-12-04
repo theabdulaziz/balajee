@@ -415,8 +415,8 @@ function AdminContent() {
                     </div>
 
                     {/* Jessup Warehouse */}
-                    <div className="mb-6 p-4 bg-green-50 rounded-lg">
-                      <h4 className="font-medium mb-3 text-sm text-green-900">Jessup Warehouse (MD)</h4>
+                    <div className="mb-6 p-4 bg-primary/20 border border-primary/30 rounded-lg">
+                      <h4 className="font-medium mb-3 text-sm text-foreground">Jessup Warehouse (MD)</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="jessupPrice">Price *</Label>
