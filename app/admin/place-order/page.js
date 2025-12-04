@@ -153,13 +153,13 @@ export default function AdminPlaceOrder() {
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Place Order for Customer</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-8">Place Order for Customer</h1>
 
           {message.text && (
             <div className={`mb-6 p-4 rounded-lg ${
-              message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+              message.type === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'
             }`}>
               {message.text}
             </div>
@@ -168,12 +168,12 @@ export default function AdminPlaceOrder() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Products Section */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold mb-4">Select Products</h2>
+              <div className="bg-card border border-border rounded-lg shadow-md p-6">
+                <h2 className="text-xl font-semibold mb-4 text-foreground">Select Products</h2>
                 
                 {/* Warehouse Selection */}
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Select Warehouse</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">Select Warehouse</label>
                   <div className="flex gap-4">
                     <label className="flex items-center">
                       <input
@@ -183,10 +183,10 @@ export default function AdminPlaceOrder() {
                         onChange={(e) => setSelectedWarehouse(e.target.value)}
                         className="mr-2"
                       />
-                      <span className="text-sm">
+                      <span className="text-sm text-foreground">
                         <strong>Maspeth, NY</strong>
                         <br/>
-                        <span className="text-xs text-gray-500">58-06 57th Road, Maspeth NY 11378</span>
+                        <span className="text-xs text-muted-foreground">58-06 57th Road, Maspeth NY 11378</span>
                       </span>
                     </label>
                     <label className="flex items-center">
@@ -197,10 +197,10 @@ export default function AdminPlaceOrder() {
                         onChange={(e) => setSelectedWarehouse(e.target.value)}
                         className="mr-2"
                       />
-                      <span className="text-sm">
+                      <span className="text-sm text-foreground">
                         <strong>Jessup, MD</strong>
                         <br/>
-                        <span className="text-xs text-gray-500">Contact: 347-475-4299</span>
+                        <span className="text-xs text-muted-foreground">Contact: 347-475-4299</span>
                       </span>
                     </label>
                   </div>
@@ -211,7 +211,7 @@ export default function AdminPlaceOrder() {
                   placeholder="Search products by name or SKU..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-input border border-border text-foreground rounded-lg mb-4 focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
 
                 <div className="max-h-[600px] overflow-y-auto space-y-2">
