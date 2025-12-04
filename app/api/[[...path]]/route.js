@@ -586,16 +586,24 @@ async function handleRoute(request, { params }) {
       }
 
       const body = await request.json();
-      const { name, description, price, stock, category, brand, imageUrl } = body;
+      const { name, description, sku, category, brand, unitSize, maspethPrice, maspethQuantity, jessupPrice, jessupQuantity, imageUrl } = body;
 
       const updateData = {
         name,
         description,
-        price: parseFloat(price),
-        stock: parseInt(stock),
+        sku,
         category,
         brand,
+        unitSize,
+        maspethPrice: parseFloat(maspethPrice),
+        maspethQuantity: parseInt(maspethQuantity),
+        jessupPrice: parseFloat(jessupPrice),
+        jessupQuantity: parseInt(jessupQuantity),
         imageUrl,
+        // Backward compatibility
+        price: parseFloat(maspethPrice),
+        stock: parseInt(maspethQuantity),
+        updatedAt: new Date(),
       };
 
       const result = await db.collection('products').updateOne(
