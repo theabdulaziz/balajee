@@ -60,6 +60,40 @@ function DashboardContent() {
     }
   };
 
+  const handleSaveProfile = async () => {
+    setSaving(true);
+    setMessage({ type: '', text: '' });
+    
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/profile/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(profileData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update profile');
+      }
+
+      // Update local storage
+      const updatedUser = { ...user, ...profileData };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      setEditMode(false);
+      setMessage({ type: 'success', text: 'Profile updated successfully!' });
+    } catch (error) {
+      setMessage({ type: 'error', text: error.message });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const stats = {
     total: orders.length,
     pending: orders.filter(o => o.status === 'Pending').length,
