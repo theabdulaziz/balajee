@@ -385,8 +385,8 @@ function AdminContent() {
                     </div>
 
                     {/* Maspeth Warehouse */}
-                    <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-                      <h4 className="font-medium mb-3 text-sm text-blue-900">Maspeth Warehouse (NY)</h4>
+                    <div className="mb-6 p-4 bg-secondary/20 border border-secondary/30 rounded-lg">
+                      <h4 className="font-medium mb-3 text-sm text-foreground">Maspeth Warehouse (NY)</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="maspethPrice">Price *</Label>
