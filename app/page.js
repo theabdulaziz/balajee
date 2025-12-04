@@ -10,9 +10,9 @@ export default function Home() {
       <HeroBanner />
 
       {/* Mission Statement */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 text-center max-w-4xl">
-          <h2 className="text-4xl font-bold mb-6">Welcome to Balajee Trade Link</h2>
+          <h2 className="text-4xl font-bold mb-6 text-foreground">Welcome to Balajee Trade Link</h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
             We are a premier wholesale importer and distributor of authentic South-Asian grocery products in the United States. 
             With decades of experience, we bring you the finest selection of traditional foods from Nepal, India, Bhutan, and across the region. 
