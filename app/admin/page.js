@@ -109,10 +109,14 @@ function AdminContent() {
     setFormData({
       name: product.name,
       description: product.description,
-      price: product.price.toString(),
-      stock: product.stock.toString(),
+      sku: product.sku || '',
       category: product.category,
-      brand: product.brand,
+      brand: product.brand || '',
+      unitSize: product.unitSize || '',
+      maspethPrice: product.maspethPrice?.toString() || product.price?.toString() || '',
+      maspethQuantity: product.maspethQuantity?.toString() || product.stock?.toString() || '',
+      jessupPrice: product.jessupPrice?.toString() || product.price?.toString() || '',
+      jessupQuantity: product.jessupQuantity?.toString() || product.stock?.toString() || '',
       imageUrl: product.imageUrl || '',
     });
     setShowProductForm(true);
