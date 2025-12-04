@@ -51,16 +51,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div 
-      className="min-h-screen"
-      style={{
-        backgroundImage: 'url(https://images.unsplash.com/photo-1627915589334-14a3c3e3a741?w=1600)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      <div className="bg-black bg-opacity-70 min-h-screen py-12">
+    <div className="min-h-screen py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold text-white mb-8 text-center">Contact Us</h1>
 
