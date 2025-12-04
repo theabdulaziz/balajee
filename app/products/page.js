@@ -144,11 +144,12 @@ export default function ProductsPage() {
                   const setQuantity = (val) => setQuantities({ ...quantities, [product.id]: val });
                   
                   return (
-                    <div key={product.id} className="bg-white rounded-lg shadow-md p-4 flex flex-col md:flex-row gap-4 items-center">
+                    <div key={product.id} className="bg-card border border-border rounded-lg shadow-md p-4 flex flex-col md:flex-row gap-4 items-center">
                       <img
-                        src={product.imageUrl}
+                        src={product.imageUrl || 'https://images.unsplash.com/photo-1717082778340-6bcc3a24f33d?w=300&h=300&fit=crop'}
                         alt={product.name}
                         className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-lg flex-shrink-0"
+                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1717082778340-6bcc3a24f33d?w=300&h=300&fit=crop'; }}
                       />
                       <div className="flex-grow min-w-0">
                         <div className="flex justify-between items-start mb-1">
