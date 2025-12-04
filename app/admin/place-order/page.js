@@ -66,13 +66,21 @@ export default function AdminPlaceOrder() {
   };
 
   const addToCart = (product) => {
+    const price = selectedWarehouse === 'maspeth' ? product.maspethPrice : product.jessupPrice;
+    const availableStock = selectedWarehouse === 'maspeth' ? product.maspethQuantity : product.jessupQuantity;
+    
+    if (availableStock <= 0) {
+      setMessage({ type: 'error', text: `${product.name} is out of stock at ${selectedWarehouse} warehouse` });
+      return;
+    }
+    
     const existing = cart.find(item => item.id === product.id);
     if (existing) {
       setCart(cart.map(item => 
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === product.id ? { ...item, quantity: item.quantity + 1, price } : item
       ));
     } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
+      setCart([...cart, { ...product, quantity: 1, price, warehouse: selectedWarehouse }]);
     }
   };
 
