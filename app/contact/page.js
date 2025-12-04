@@ -170,8 +170,30 @@ export default function ContactPage() {
                   <div className="flex items-start space-x-4">
                     <MapPin className="h-6 w-6 text-primary mt-1" />
                     <div>
-                      <h3 className="font-semibold text-lg mb-2">Warehouse Address</h3>
-                      <p className="text-muted-foreground">1318 Sen Robert Mellow Dr<br />Jessup, PA 18434</p>
+                      <h3 className="font-semibold text-lg mb-2">Maspeth Warehouse</h3>
+                      <p className="text-muted-foreground">
+                        58-06 57th Road<br />
+                        Maspeth, NY 11378
+                      </p>
+                      <p className="text-muted-foreground mt-2">
+                        <Phone className="h-4 w-4 inline mr-1" />
+                        347-475-4299
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <MapPin className="h-6 w-6 text-primary mt-1" />
+                    <div>
+                      <h3 className="font-semibold text-lg mb-2">Jessup Warehouse</h3>
+                      <p className="text-muted-foreground">
+                        1318 Sen Robert Mellow Dr<br />
+                        Jessup, PA 18434
+                      </p>
                     </div>
                   </div>
                 </CardContent>
