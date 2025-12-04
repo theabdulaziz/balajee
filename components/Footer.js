@@ -39,17 +39,31 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-4">Warehouse Contact</h4>
-            <ul className="space-y-3">
-              <li className="flex items-start text-gray-400">
-                <MapPin className="h-4 w-4 mr-2 mt-1 flex-shrink-0" />
-                <span>1318 Sen Robert Mellow Dr<br />Jessup, PA 18434</span>
-              </li>
-              <li className="flex items-center text-gray-400">
-                <Phone className="h-4 w-4 mr-2 flex-shrink-0" />
-                443-856-8505 (Sales)
-              </li>
-            </ul>
+            <h4 className="text-lg font-semibold mb-4">Warehouses</h4>
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm font-semibold text-white mb-2">Maspeth, NY</p>
+                <ul className="space-y-2">
+                  <li className="flex items-start text-gray-400 text-sm">
+                    <MapPin className="h-3 w-3 mr-2 mt-1 flex-shrink-0" />
+                    <span>58-06 57th Road<br />Maspeth, NY 11378</span>
+                  </li>
+                  <li className="flex items-center text-gray-400 text-sm">
+                    <Phone className="h-3 w-3 mr-2 flex-shrink-0" />
+                    347-475-4299
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-white mb-2">Jessup, PA</p>
+                <ul className="space-y-2">
+                  <li className="flex items-start text-gray-400 text-sm">
+                    <MapPin className="h-3 w-3 mr-2 mt-1 flex-shrink-0" />
+                    <span>1318 Sen Robert Mellow Dr<br />Jessup, PA 18434</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 
