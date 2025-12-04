@@ -146,63 +146,90 @@ export default function ProductsPage() {
                 ))}
               </div>
             ) : (
-              <div className="space-y-4">
-                {filteredProducts.map((product) => (
-                  <div key={product.id} className="bg-white rounded-lg shadow-md p-6 flex flex-col md:flex-row gap-6">
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-full md:w-48 h-48 object-cover rounded-lg"
-                    />
-                    <div className="flex-grow">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h3 className="text-xl font-semibold text-gray-900">{product.name}</h3>
-                          {product.sku && (
-                            <p className="text-sm text-gray-500">SKU: {product.sku}</p>
+              <div className="space-y-3">
+                {filteredProducts.map((product) => {
+                  const [quantity, setQuantity] = React.useState(1);
+                  return (
+                    <div key={product.id} className="bg-white rounded-lg shadow-md p-4 flex flex-col md:flex-row gap-4 items-center">
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-lg flex-shrink-0"
+                      />
+                      <div className="flex-grow min-w-0">
+                        <div className="flex justify-between items-start mb-1">
+                          <div className="flex-grow pr-2">
+                            <h3 className="text-lg font-semibold text-gray-900 truncate">{product.name}</h3>
+                            {product.sku && (
+                              <p className="text-xs text-gray-500">SKU: {product.sku}</p>
+                            )}
+                          </div>
+                          <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium whitespace-nowrap">
+                            {product.category}
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap gap-1 mb-2">
+                          {product.brand && (
+                            <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs">
+                              {product.brand}
+                            </span>
+                          )}
+                          {product.unitSize && (
+                            <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs">
+                              {product.unitSize}
+                            </span>
+                          )}
+                          {product.stock > 0 ? (
+                            <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs">
+                              Stock: {product.stock}
+                            </span>
+                          ) : (
+                            <span className="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs">
+                              Out of Stock
+                            </span>
                           )}
                         </div>
-                        <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                          {product.category}
-                        </span>
                       </div>
-                      <p className="text-gray-600 mb-4">{product.description}</p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {product.brand && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm">
-                            Brand: {product.brand}
-                          </span>
-                        )}
-                        {product.unitSize && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm">
-                            {product.unitSize}
-                          </span>
-                        )}
-                        {product.stock > 0 ? (
-                          <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-sm">
-                            In Stock: {product.stock}
-                          </span>
-                        ) : (
-                          <span className="px-2 py-1 bg-red-100 text-red-700 rounded text-sm">
-                            Out of Stock
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-2xl font-bold text-green-600">
-                          ${product.price.toFixed(2)}
+                      <div className="flex items-center gap-3 flex-shrink-0">
+                        <span className="text-xl font-bold text-green-600 whitespace-nowrap">
+                          ${product.price?.toFixed(2) || '0.00'}
                         </span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
+                          >
+                            -
+                          </button>
+                          <input
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                            className="w-16 px-2 py-1 text-center border border-gray-300 rounded text-sm"
+                            min="1"
+                          />
+                          <button
+                            onClick={() => setQuantity(quantity + 1)}
+                            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
+                          >
+                            +
+                          </button>
+                        </div>
                         <Button
-                          onClick={() => handleAddToCart(product, 1)}
+                          onClick={() => {
+                            handleAddToCart(product, quantity);
+                            setQuantity(1);
+                          }}
                           disabled={product.stock <= 0}
-                          className="px-6"
+                          className="px-4 py-2 whitespace-nowrap"
+                          size="sm"
                         >
-                          Add to Cart
+                          Add
                         </Button>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )
           ) : (
