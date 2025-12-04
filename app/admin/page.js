@@ -265,7 +265,19 @@ function AdminContent() {
                 <Button onClick={() => {
                   setShowProductForm(true);
                   setEditingProduct(null);
-                  setFormData({ name: '', description: '', price: '', stock: '', category: '', brand: '', imageUrl: '' });
+                  setFormData({ 
+                    name: '', 
+                    description: '', 
+                    sku: '', 
+                    category: '', 
+                    brand: '', 
+                    unitSize: '',
+                    maspethPrice: '', 
+                    maspethQuantity: '', 
+                    jessupPrice: '',
+                    jessupQuantity: '',
+                    imageUrl: '' 
+                  });
                 }}>
                   <Plus className="h-4 w-4 mr-2" />
                   Add Product
