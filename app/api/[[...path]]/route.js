@@ -666,6 +666,130 @@ async function handleRoute(request, { params }) {
       return handleCORS(NextResponse.json({ message: 'Order updated successfully' }));
     }
 
+    // POST /api/auth/forgot-password - Send password reset email
+    if (route === '/auth/forgot-password' && method === 'POST') {
+      const body = await request.json();
+      const { email } = body;
+
+      if (!email) {
+        return handleCORS(NextResponse.json({ success: false, message: 'Email is required' }, { status: 400 }));
+      }
+
+      const user = await db.collection('users').findOne({ email });
+      
+      // Always return success for security (don't reveal if email exists)
+      // In production, send actual email with reset link here using nodemailer
+      
+      if (user) {
+        // TODO: Generate reset token and send email
+        const resetToken = uuidv4();
+        const resetExpiry = new Date(Date.now() + 3600000); // 1 hour from now
+        
+        await db.collection('users').updateOne(
+          { email },
+          { $set: { resetToken, resetExpiry } }
+        );
+        
+        console.log(`Password reset token for ${email}: ${resetToken}`);
+        // In production: Send email with reset link containing this token
+      }
+      
+      return handleCORS(NextResponse.json({ success: true, message: 'If the email exists, reset instructions have been sent' }));
+    }
+
+    // GET /api/admin/customers - Get all customers
+    if (route === '/admin/customers' && method === 'GET') {
+      const customers = await db.collection('users')
+        .find({ role: 'customer' })
+        .project({ _id: 0, password: 0, resetToken: 0, resetExpiry: 0 })
+        .sort({ createdAt: -1 })
+        .toArray();
+
+      return handleCORS(NextResponse.json({ success: true, customers }));
+    }
+
+    // POST /api/admin/place-order - Admin places order for customer
+    if (route === '/admin/place-order' && method === 'POST') {
+      const body = await request.json();
+      const { customerId, items } = body;
+
+      if (!customerId || !items || items.length === 0) {
+        return handleCORS(NextResponse.json({ success: false, message: 'Customer ID and items required' }, { status: 400 }));
+      }
+
+      const customer = await db.collection('users').findOne({ id: customerId });
+      if (!customer) {
+        return handleCORS(NextResponse.json({ success: false, message: 'Customer not found' }, { status: 404 }));
+      }
+
+      const order = {
+        id: uuidv4(),
+        userId: customerId,
+        userEmail: customer.email,
+        items,
+        status: 'Pending',
+        placedBy: 'admin',
+        createdAt: new Date(),
+      };
+
+      await db.collection('orders').insertOne(order);
+      
+      // Create notification for customer
+      await db.collection('notifications').insertOne({
+        id: uuidv4(),
+        userId: customerId,
+        title: 'New Order Placed',
+        message: `An order has been placed on your behalf by admin. Order ID: ${order.id}`,
+        read: false,
+        createdAt: new Date()
+      });
+
+      const { _id, ...cleanedOrder } = order;
+      return handleCORS(NextResponse.json({ success: true, order: cleanedOrder }));
+    }
+
+    // GET /api/notifications - Get user notifications
+    if (route === '/notifications' && method === 'GET') {
+      const token = getTokenFromHeader(request);
+      const decoded = verifyToken(token);
+
+      if (!decoded) {
+        return handleCORS(NextResponse.json({ error: 'Unauthorized' }, { status: 401 }));
+      }
+
+      const notifications = await db.collection('notifications')
+        .find({ userId: decoded.userId })
+        .project({ _id: 0 })
+        .sort({ createdAt: -1 })
+        .limit(50)
+        .toArray();
+
+      return handleCORS(NextResponse.json({ success: true, notifications }));
+    }
+
+    // PUT /api/notifications/:id/read - Mark notification as read
+    if (route.startsWith('/notifications/') && route.endsWith('/read') && method === 'PUT') {
+      const token = getTokenFromHeader(request);
+      const decoded = verifyToken(token);
+
+      if (!decoded) {
+        return handleCORS(NextResponse.json({ error: 'Unauthorized' }, { status: 401 }));
+      }
+
+      const notificationId = route.split('/')[2];
+      
+      const result = await db.collection('notifications').updateOne(
+        { id: notificationId, userId: decoded.userId },
+        { $set: { read: true } }
+      );
+
+      if (result.matchedCount === 0) {
+        return handleCORS(NextResponse.json({ success: false, message: 'Notification not found' }, { status: 404 }));
+      }
+
+      return handleCORS(NextResponse.json({ success: true, message: 'Notification marked as read' }));
+    }
+
     // Route not found
     return handleCORS(NextResponse.json({ error: `Route ${route} not found` }, { status: 404 }));
 
