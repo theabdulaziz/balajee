@@ -14,6 +14,7 @@ export default function ProductsPage() {
   const [category, setCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [quantities, setQuantities] = useState({}); // Track quantities for all products
 
   useEffect(() => {
     fetchProducts();
