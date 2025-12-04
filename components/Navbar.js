@@ -43,7 +43,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
+    <nav className="bg-card border-b border-border shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="text-2xl font-bold text-primary">
@@ -51,13 +51,13 @@ export default function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center space-x-6">
-            <Link href="/" className={`hover:text-primary transition ${pathname === '/' ? 'text-primary font-semibold' : 'text-gray-700'}`}>
+            <Link href="/" className={`hover:text-primary transition ${pathname === '/' ? 'text-primary font-semibold' : 'text-foreground'}`}>
               Home
             </Link>
-            <Link href="/products" className={`hover:text-primary transition ${pathname === '/products' ? 'text-primary font-semibold' : 'text-gray-700'}`}>
+            <Link href="/products" className={`hover:text-primary transition ${pathname === '/products' ? 'text-primary font-semibold' : 'text-foreground'}`}>
               Products
             </Link>
-            <Link href="/contact" className={`hover:text-primary transition ${pathname === '/contact' ? 'text-primary font-semibold' : 'text-gray-700'}`}>
+            <Link href="/contact" className={`hover:text-primary transition ${pathname === '/contact' ? 'text-primary font-semibold' : 'text-foreground'}`}>
               Contact
             </Link>
           </div>
