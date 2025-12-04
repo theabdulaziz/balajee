@@ -18,7 +18,8 @@ export default function HeroBanner() {
           <img 
             src="/logo-btl.jpg" 
             alt="Balajee Trade Link Logo" 
-            className="h-24 md:h-32 w-auto mr-4 rounded-lg shadow-2xl"
+            className="h-24 md:h-32 w-auto mr-4 drop-shadow-2xl"
+            style={{ mixBlendMode: 'screen' }}
           />
           <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
             Balajee Trade Link
