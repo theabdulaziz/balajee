@@ -57,6 +57,12 @@ export default function Navbar() {
             <Link href="/products" className={`hover:text-primary transition ${pathname === '/products' ? 'text-primary font-semibold' : 'text-foreground'}`}>
               Products
             </Link>
+            <Link href="/online-partners" className={`hover:text-primary transition ${pathname === '/online-partners' ? 'text-primary font-semibold' : 'text-foreground'}`}>
+              Online Partners
+            </Link>
+            <Link href="/our-network" className={`hover:text-primary transition ${pathname === '/our-network' ? 'text-primary font-semibold' : 'text-foreground'}`}>
+              Our Network
+            </Link>
             <Link href="/contact" className={`hover:text-primary transition ${pathname === '/contact' ? 'text-primary font-semibold' : 'text-foreground'}`}>
               Contact
             </Link>
