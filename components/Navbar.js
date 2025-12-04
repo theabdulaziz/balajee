@@ -78,9 +78,14 @@ export default function Navbar() {
               <>
                 <NotificationBadge />
                 {user.role === 'admin' && (
-                  <Link href="/admin/place-order">
-                    <Button variant="ghost" size="sm" className="text-xs">Place Order</Button>
-                  </Link>
+                  <>
+                    <Link href="/admin/place-order">
+                      <Button variant="ghost" size="sm" className="text-xs">Place Order</Button>
+                    </Link>
+                    <Link href="/admin/products-list">
+                      <Button variant="ghost" size="sm" className="text-xs">Inventory</Button>
+                    </Link>
+                  </>
                 )}
                 <Link href={user.role === 'admin' ? '/admin' : '/dashboard'}>
                   <Button variant="ghost" size="icon">
