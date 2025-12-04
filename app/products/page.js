@@ -228,7 +228,7 @@ export default function ProductsPage() {
               </div>
             )
           ) : (
-            <div className="bg-white rounded-lg shadow-md p-12 text-center">
+            <div className="bg-card border border-border rounded-lg shadow-md p-12 text-center">
               <p className="text-xl text-muted-foreground">No products found matching your criteria</p>
               <Button 
                 onClick={() => { setSearchQuery(''); setCategory('all'); }}
