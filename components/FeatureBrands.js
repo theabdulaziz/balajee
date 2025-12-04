@@ -2,27 +2,33 @@ export default function FeatureBrands() {
   const brands = [
     {
       name: 'Wai Wai',
-      image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=400&fit=crop',
+      image: '/brands/waiwai-logo.jpg',
+      url: 'https://waiwai.com.np/',
     },
     {
       name: 'Current',
-      image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&h=400&fit=crop',
+      image: '/brands/current-logo.png',
+      url: 'https://yashodafoods.com.np/',
     },
     {
       name: 'Rum Pum',
-      image: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=400&h=400&fit=crop',
+      image: '/brands/rumpum-logo.jpg',
+      url: 'https://rumpumindia.com/faq/',
     },
     {
       name: 'Druk',
-      image: 'https://images.unsplash.com/photo-1604999333679-b86d54738315?w=400&h=400&fit=crop',
+      image: '/brands/druk-logo.png',
+      url: null,
     },
     {
       name: 'Rato Bhale',
-      image: 'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=400&h=400&fit=crop',
+      image: '/brands/rato-bhale-logo.png',
+      url: null,
     },
     {
       name: 'Aama Ko Achar',
-      image: 'https://images.unsplash.com/photo-1596040033229-a0b3b6087c97?w=400&h=400&fit=crop',
+      image: '/brands/aama-logo.jpg',
+      url: 'https://www.aamakoachar.com/',
     },
   ];
 
@@ -31,20 +37,41 @@ export default function FeatureBrands() {
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-12 text-foreground">Featured Brands</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          {brands.map((brand, index) => (
-            <div key={index} className="bg-card border border-border rounded-lg shadow-md overflow-hidden hover:shadow-xl transition group">
-              <div className="aspect-square relative overflow-hidden">
-                <img
-                  src={brand.image}
-                  alt={brand.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                />
+          {brands.map((brand, index) => {
+            const CardContent = (
+              <>
+                <div className="aspect-square relative overflow-hidden bg-white">
+                  <img
+                    src={brand.image}
+                    alt={brand.name}
+                    className="w-full h-full object-contain p-4 group-hover:scale-110 transition duration-300"
+                  />
+                </div>
+                <div className="p-4 text-center bg-card">
+                  <h3 className="font-semibold text-lg text-foreground">{brand.name}</h3>
+                </div>
+              </>
+            );
+
+            return brand.url ? (
+              <a
+                key={index}
+                href={brand.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-card border border-border rounded-lg shadow-md overflow-hidden hover:shadow-xl hover:border-primary transition group block"
+              >
+                {CardContent}
+              </a>
+            ) : (
+              <div
+                key={index}
+                className="bg-card border border-border rounded-lg shadow-md overflow-hidden hover:shadow-xl transition group"
+              >
+                {CardContent}
               </div>
-              <div className="p-4 text-center bg-card">
-                <h3 className="font-semibold text-lg text-foreground">{brand.name}</h3>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
