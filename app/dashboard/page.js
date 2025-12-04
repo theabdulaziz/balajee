@@ -165,17 +165,111 @@ function DashboardContent() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Account Information</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle>Account Information</CardTitle>
+                {!editMode ? (
+                  <Button size="sm" onClick={() => setEditMode(true)}>Edit</Button>
+                ) : (
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" onClick={() => {
+                      setEditMode(false);
+                      setProfileData({
+                        name: user.name || '',
+                        storeName: user.storeName || user.company || '',
+                        address: user.address || '',
+                        phone: user.phone || '',
+                        email: user.email || ''
+                      });
+                      setMessage({ type: '', text: '' });
+                    }}>Cancel</Button>
+                    <Button size="sm" onClick={handleSaveProfile} disabled={saving}>
+                      {saving ? 'Saving...' : 'Save'}
+                    </Button>
+                  </div>
+                )}
+              </div>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <div>
-                <p className="text-sm text-muted-foreground">Email</p>
-                <p className="font-medium">{user?.email}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Company</p>
-                <p className="font-medium">{user?.company || 'N/A'}</p>
-              </div>
+            <CardContent className="space-y-3">
+              {message.text && (
+                <div className={`p-3 rounded-lg text-sm ${
+                  message.type === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                }`}>
+                  {message.text}
+                </div>
+              )}
+              
+              {editMode ? (
+                <>
+                  <div>
+                    <label className="text-sm text-muted-foreground block mb-1">Full Name</label>
+                    <input
+                      type="text"
+                      value={profileData.name}
+                      onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
+                      className="w-full px-3 py-2 bg-input border border-border text-foreground rounded-lg focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-muted-foreground block mb-1">Store Name</label>
+                    <input
+                      type="text"
+                      value={profileData.storeName}
+                      onChange={(e) => setProfileData({ ...profileData, storeName: e.target.value })}
+                      className="w-full px-3 py-2 bg-input border border-border text-foreground rounded-lg focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-muted-foreground block mb-1">Address</label>
+                    <textarea
+                      value={profileData.address}
+                      onChange={(e) => setProfileData({ ...profileData, address: e.target.value })}
+                      rows="2"
+                      className="w-full px-3 py-2 bg-input border border-border text-foreground rounded-lg focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-muted-foreground block mb-1">Phone Number</label>
+                    <input
+                      type="tel"
+                      value={profileData.phone}
+                      onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                      className="w-full px-3 py-2 bg-input border border-border text-foreground rounded-lg focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-muted-foreground block mb-1">Email</label>
+                    <input
+                      type="email"
+                      value={profileData.email}
+                      disabled
+                      className="w-full px-3 py-2 bg-muted border border-border text-muted-foreground rounded-lg cursor-not-allowed"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Full Name</p>
+                    <p className="font-medium text-foreground">{user?.name || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Store Name</p>
+                    <p className="font-medium text-foreground">{user?.storeName || user?.company || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Address</p>
+                    <p className="font-medium text-foreground">{user?.address || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Phone Number</p>
+                    <p className="font-medium text-foreground">{user?.phone || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Email</p>
+                    <p className="font-medium text-foreground">{user?.email}</p>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>
