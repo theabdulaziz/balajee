@@ -171,6 +171,41 @@ export default function AdminPlaceOrder() {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-xl font-semibold mb-4">Select Products</h2>
                 
+                {/* Warehouse Selection */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Select Warehouse</label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        value="maspeth"
+                        checked={selectedWarehouse === 'maspeth'}
+                        onChange={(e) => setSelectedWarehouse(e.target.value)}
+                        className="mr-2"
+                      />
+                      <span className="text-sm">
+                        <strong>Maspeth, NY</strong>
+                        <br/>
+                        <span className="text-xs text-gray-500">58-06 57th Road, Maspeth NY 11378</span>
+                      </span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        value="jessup"
+                        checked={selectedWarehouse === 'jessup'}
+                        onChange={(e) => setSelectedWarehouse(e.target.value)}
+                        className="mr-2"
+                      />
+                      <span className="text-sm">
+                        <strong>Jessup, MD</strong>
+                        <br/>
+                        <span className="text-xs text-gray-500">Contact: 347-475-4299</span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
                 <input
                   type="text"
                   placeholder="Search products by name or SKU..."
@@ -180,20 +215,27 @@ export default function AdminPlaceOrder() {
                 />
 
                 <div className="max-h-96 overflow-y-auto space-y-2">
-                  {filteredProducts.map(product => (
-                    <div key={product.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
-                      <div className="flex-grow">
-                        <p className="font-medium text-sm">{product.name}</p>
-                        <p className="text-xs text-gray-500">SKU: {product.sku} | ${product.price.toFixed(2)}</p>
+                  {filteredProducts.map(product => {
+                    const price = selectedWarehouse === 'maspeth' ? product.maspethPrice : product.jessupPrice;
+                    const stock = selectedWarehouse === 'maspeth' ? product.maspethQuantity : product.jessupQuantity;
+                    return (
+                      <div key={product.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                        <div className="flex-grow">
+                          <p className="font-medium text-sm">{product.name}</p>
+                          <p className="text-xs text-gray-500">
+                            SKU: {product.sku} | ${price?.toFixed(2) || '0.00'} | Stock: {stock || 0}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => addToCart(product)}
+                          disabled={!stock || stock <= 0}
+                          className="ml-4 px-3 py-1 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                        >
+                          Add
+                        </button>
                       </div>
-                      <button
-                        onClick={() => addToCart(product)}
-                        className="ml-4 px-3 py-1 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700"
-                      >
-                        Add
-                      </button>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
