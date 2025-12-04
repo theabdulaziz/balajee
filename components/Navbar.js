@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ShoppingCart, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import NotificationBadge from '@/components/NotificationBadge';
 
 export default function Navbar() {
   const pathname = usePathname();
