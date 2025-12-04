@@ -48,13 +48,17 @@ export default function OnlinePartners() {
                   className="block"
                 >
                   {/* Logo Container */}
-                  <div className="aspect-square relative overflow-hidden rounded-lg bg-white p-8 mb-6 group-hover:scale-105 transition-transform duration-300">
+                  <div className="aspect-square relative overflow-hidden rounded-lg bg-white p-8 mb-6 group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
                     <img
                       src={partner.logo}
                       alt={partner.name}
-                      className="w-full h-full object-contain"
+                      className="max-w-full max-h-full object-contain"
+                      crossOrigin="anonymous"
+                      loading="lazy"
                       onError={(e) => {
-                        e.target.src = 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=400&fit=crop';
+                        console.error(`Failed to load image: ${partner.logo}`);
+                        e.target.style.display = 'none';
+                        e.target.parentElement.innerHTML = `<div class="text-center"><p class="text-gray-600 font-semibold">${partner.name}</p></div>`;
                       }}
                     />
                   </div>
