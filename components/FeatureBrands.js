@@ -27,12 +27,12 @@ export default function FeatureBrands() {
   ];
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-card/40 backdrop-blur-sm">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-12">Featured Brands</h2>
+        <h2 className="text-4xl font-bold text-center mb-12 text-foreground">Featured Brands</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {brands.map((brand, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition group">
+            <div key={index} className="bg-card border border-border rounded-lg shadow-md overflow-hidden hover:shadow-xl transition group">
               <div className="aspect-square relative overflow-hidden">
                 <img
                   src={brand.image}
@@ -40,8 +40,8 @@ export default function FeatureBrands() {
                   className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
                 />
               </div>
-              <div className="p-4 text-center">
-                <h3 className="font-semibold text-lg">{brand.name}</h3>
+              <div className="p-4 text-center bg-card">
+                <h3 className="font-semibold text-lg text-foreground">{brand.name}</h3>
               </div>
             </div>
           ))}
