@@ -319,7 +319,7 @@ export default function AdminPlaceOrder() {
                   <select
                     value={selectedCustomer}
                     onChange={(e) => setSelectedCustomer(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                    className="w-full px-3 py-2 bg-input border border-border text-foreground rounded-lg focus:ring-2 focus:ring-primary"
                   >
                     <option value="">-- Choose Customer --</option>
                     {customers.map(customer => (
@@ -331,31 +331,31 @@ export default function AdminPlaceOrder() {
                 </div>
 
                 <div className="mb-4">
-                  <h3 className="font-medium text-sm mb-2">Cart Items ({cart.length})</h3>
+                  <h3 className="font-medium text-sm mb-2 text-foreground">Cart Items ({cart.length})</h3>
                   <div className="max-h-64 overflow-y-auto space-y-2">
                     {cart.map(item => (
-                      <div key={item.id} className="flex items-center justify-between text-sm p-2 bg-gray-50 rounded">
+                      <div key={item.id} className="flex items-center justify-between text-sm p-2 bg-muted/50 rounded">
                         <div className="flex-grow pr-2">
-                          <p className="font-medium truncate">{item.name}</p>
-                          <p className="text-xs text-gray-500">${item.price} x {item.quantity}</p>
+                          <p className="font-medium truncate text-foreground">{item.name}</p>
+                          <p className="text-xs text-muted-foreground">${item.price} x {item.quantity}</p>
                         </div>
                         <div className="flex items-center space-x-1">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                            className="px-2 py-1 bg-muted text-foreground rounded hover:bg-muted/80"
                           >
                             -
                           </button>
-                          <span className="px-2">{item.quantity}</span>
+                          <span className="px-2 text-foreground">{item.quantity}</span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                            className="px-2 py-1 bg-muted text-foreground rounded hover:bg-muted/80"
                           >
                             +
                           </button>
                           <button
                             onClick={() => removeFromCart(item.id)}
-                            className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                            className="px-2 py-1 bg-destructive text-destructive-foreground rounded hover:bg-destructive/90"
                           >
                             ×
                           </button>
