@@ -545,21 +545,29 @@ async function handleRoute(request, { params }) {
     // POST /api/admin/products - Create product
     if (route === '/admin/products' && method === 'POST') {
       const body = await request.json();
-      const { name, description, price, stock, category, brand, imageUrl } = body;
+      const { name, description, sku, category, brand, unitSize, maspethPrice, maspethQuantity, jessupPrice, jessupQuantity, imageUrl } = body;
 
-      if (!name || !description || price === undefined || stock === undefined || !category) {
-        return handleCORS(NextResponse.json({ error: 'Missing required fields' }, { status: 400 }));
+      if (!name || !sku || !category) {
+        return handleCORS(NextResponse.json({ error: 'Missing required fields (name, sku, category)' }, { status: 400 }));
       }
 
       const product = {
         id: uuidv4(),
+        sku,
         name,
-        description,
-        price: parseFloat(price),
-        stock: parseInt(stock),
+        description: description || name,
         category,
         brand: brand || '',
+        unitSize: unitSize || '',
+        maspethPrice: parseFloat(maspethPrice) || 0,
+        maspethQuantity: parseInt(maspethQuantity) || 0,
+        jessupPrice: parseFloat(jessupPrice) || 0,
+        jessupQuantity: parseInt(jessupQuantity) || 0,
         imageUrl: imageUrl || '',
+        // Backward compatibility
+        price: parseFloat(maspethPrice) || 0,
+        stock: parseInt(maspethQuantity) || 0,
+        createdAt: new Date(),
       };
 
       await db.collection('products').insertOne(product);
