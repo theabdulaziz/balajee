@@ -277,70 +277,139 @@ function AdminContent() {
                     <h3 className="text-lg font-semibold mb-4">
                       {editingProduct ? 'Edit Product' : 'Add New Product'}
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="name">Name *</Label>
-                        <Input
-                          id="name"
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="price">Price *</Label>
-                        <Input
-                          id="price"
-                          type="number"
-                          step="0.01"
-                          value={formData.price}
-                          onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="stock">Stock *</Label>
-                        <Input
-                          id="stock"
-                          type="number"
-                          value={formData.stock}
-                          onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="category">Category *</Label>
-                        <Input
-                          id="category"
-                          value={formData.category}
-                          onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="brand">Brand</Label>
-                        <Input
-                          id="brand"
-                          value={formData.brand}
-                          onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="imageUrl">Image URL</Label>
-                        <Input
-                          id="imageUrl"
-                          value={formData.imageUrl}
-                          onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                        />
+                    
+                    {/* Basic Information */}
+                    <div className="mb-6">
+                      <h4 className="font-medium mb-3 text-sm text-gray-700">Basic Information</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="md:col-span-2">
+                          <Label htmlFor="name">Product Name *</Label>
+                          <Input
+                            id="name"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            placeholder="e.g., RUMPUM Chicken Flavored Noodles 24 X 75g"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="sku">SKU *</Label>
+                          <Input
+                            id="sku"
+                            value={formData.sku}
+                            onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+                            placeholder="e.g., 10101101"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="category">Category *</Label>
+                          <Input
+                            id="category"
+                            value={formData.category}
+                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                            placeholder="e.g., Noodles"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="brand">Brand</Label>
+                          <Input
+                            id="brand"
+                            value={formData.brand}
+                            onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                            placeholder="e.g., RUMPUM"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="unitSize">Unit Size</Label>
+                          <Input
+                            id="unitSize"
+                            value={formData.unitSize}
+                            onChange={(e) => setFormData({ ...formData, unitSize: e.target.value })}
+                            placeholder="e.g., 24 X 75g"
+                          />
+                        </div>
+                        <div className="md:col-span-2">
+                          <Label htmlFor="imageUrl">Image URL</Label>
+                          <Input
+                            id="imageUrl"
+                            value={formData.imageUrl}
+                            onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                            placeholder="https://example.com/image.jpg"
+                          />
+                        </div>
                       </div>
                     </div>
-                    <div className="mt-4">
-                      <Label htmlFor="description">Description *</Label>
+
+                    {/* Maspeth Warehouse */}
+                    <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+                      <h4 className="font-medium mb-3 text-sm text-blue-900">Maspeth Warehouse (NY)</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="maspethPrice">Price *</Label>
+                          <Input
+                            id="maspethPrice"
+                            type="number"
+                            step="0.01"
+                            value={formData.maspethPrice}
+                            onChange={(e) => setFormData({ ...formData, maspethPrice: e.target.value })}
+                            placeholder="0.00"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="maspethQuantity">Quantity *</Label>
+                          <Input
+                            id="maspethQuantity"
+                            type="number"
+                            value={formData.maspethQuantity}
+                            onChange={(e) => setFormData({ ...formData, maspethQuantity: e.target.value })}
+                            placeholder="0"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Jessup Warehouse */}
+                    <div className="mb-6 p-4 bg-green-50 rounded-lg">
+                      <h4 className="font-medium mb-3 text-sm text-green-900">Jessup Warehouse (MD)</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="jessupPrice">Price *</Label>
+                          <Input
+                            id="jessupPrice"
+                            type="number"
+                            step="0.01"
+                            value={formData.jessupPrice}
+                            onChange={(e) => setFormData({ ...formData, jessupPrice: e.target.value })}
+                            placeholder="0.00"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="jessupQuantity">Quantity *</Label>
+                          <Input
+                            id="jessupQuantity"
+                            type="number"
+                            value={formData.jessupQuantity}
+                            onChange={(e) => setFormData({ ...formData, jessupQuantity: e.target.value })}
+                            placeholder="0"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <Label htmlFor="description">Description</Label>
                       <Textarea
                         id="description"
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        required
+                        placeholder="Product description..."
+                        rows={3}
                       />
                     </div>
                     <div className="flex gap-2 mt-4">
