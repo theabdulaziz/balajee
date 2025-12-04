@@ -46,8 +46,15 @@ export default function Navbar() {
     <nav className="bg-card border-b border-border shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-2xl font-bold text-primary">
-            Balajee Trade Link
+          <Link href="/" className="flex items-center gap-3">
+            <img 
+              src="/logo-btl.jpg" 
+              alt="BTL Logo" 
+              className="h-10 w-10 rounded-lg shadow-md"
+            />
+            <span className="text-2xl font-bold text-primary">
+              Balajee Trade Link
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center space-x-6">
