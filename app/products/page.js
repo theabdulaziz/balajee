@@ -192,7 +192,7 @@ export default function ProductsPage() {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
+                            className="px-2 py-1 bg-muted hover:bg-muted/80 text-foreground rounded text-sm transition-colors"
                           >
                             -
                           </button>
@@ -200,12 +200,12 @@ export default function ProductsPage() {
                             type="number"
                             value={quantity}
                             onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                            className="w-16 px-2 py-1 text-center border border-gray-300 rounded text-sm"
+                            className="w-16 px-2 py-1 text-center bg-input border border-border text-foreground rounded text-sm"
                             min="1"
                           />
                           <button
                             onClick={() => setQuantity(quantity + 1)}
-                            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
+                            className="px-2 py-1 bg-muted hover:bg-muted/80 text-foreground rounded text-sm transition-colors"
                           >
                             +
                           </button>
