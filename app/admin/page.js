@@ -285,14 +285,14 @@ function AdminContent() {
               </CardHeader>
               <CardContent>
                 {showProductForm && (
-                  <form onSubmit={handleProductSubmit} className="mb-6 p-6 border rounded-lg bg-gray-50">
-                    <h3 className="text-lg font-semibold mb-4">
+                  <form onSubmit={handleProductSubmit} className="mb-6 p-6 border border-border rounded-lg bg-muted/30">
+                    <h3 className="text-lg font-semibold mb-4 text-foreground">
                       {editingProduct ? 'Edit Product' : 'Add New Product'}
                     </h3>
                     
                     {/* Basic Information */}
                     <div className="mb-6">
-                      <h4 className="font-medium mb-3 text-sm text-gray-700">Basic Information</h4>
+                      <h4 className="font-medium mb-3 text-sm text-foreground">Basic Information</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="md:col-span-2">
                           <Label htmlFor="name">Product Name *</Label>
