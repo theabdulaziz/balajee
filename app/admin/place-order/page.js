@@ -365,15 +365,15 @@ export default function AdminPlaceOrder() {
                   </div>
                 </div>
 
-                <div className="border-t pt-4">
+                <div className="border-t border-border pt-4">
                   <div className="flex justify-between mb-2">
-                    <span className="font-semibold">Total:</span>
-                    <span className="font-bold text-lg">${total.toFixed(2)}</span>
+                    <span className="font-semibold text-foreground">Total:</span>
+                    <span className="font-bold text-lg text-primary">${total.toFixed(2)}</span>
                   </div>
                   <button
                     onClick={handlePlaceOrder}
                     disabled={loading || !selectedCustomer || cart.length === 0}
-                    className="w-full py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed"
                   >
                     {loading ? 'Placing Order...' : 'Place Order'}
                   </button>
