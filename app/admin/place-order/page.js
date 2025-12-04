@@ -222,7 +222,7 @@ export default function AdminPlaceOrder() {
                     const currentQty = cartItem ? cartItem.quantity : 0;
                     
                     return (
-                      <div key={product.id} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                      <div key={product.id} className="flex items-center gap-3 p-3 border border-border rounded-lg hover:bg-muted/50 bg-card">
                         <img
                           src={product.imageUrl || 'https://images.unsplash.com/photo-1717082778340-6bcc3a24f33d?w=100&h=100&fit=crop'}
                           alt={product.name}
@@ -230,14 +230,14 @@ export default function AdminPlaceOrder() {
                           onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1717082778340-6bcc3a24f33d?w=100&h=100&fit=crop'; }}
                         />
                         <div className="flex-grow min-w-0">
-                          <p className="font-medium text-sm truncate">{product.name}</p>
-                          <p className="text-xs text-gray-500">
+                          <p className="font-medium text-sm truncate text-foreground">{product.name}</p>
+                          <p className="text-xs text-muted-foreground">
                             SKU: {product.sku}
                           </p>
-                          <p className="text-sm font-semibold text-green-600">
+                          <p className="text-sm font-semibold text-primary">
                             ${price?.toFixed(2) || '0.00'}
                           </p>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-muted-foreground">
                             Available: {stock || 0}
                           </p>
                         </div>
@@ -255,7 +255,7 @@ export default function AdminPlaceOrder() {
                               }
                             }}
                             disabled={currentQty === 0}
-                            className="px-2 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-30 disabled:cursor-not-allowed text-sm font-bold"
+                            className="px-2 py-1 bg-muted text-foreground rounded hover:bg-muted/80 disabled:opacity-30 disabled:cursor-not-allowed text-sm font-bold"
                           >
                             -
                           </button>
@@ -277,7 +277,7 @@ export default function AdminPlaceOrder() {
                                 }
                               }
                             }}
-                            className="w-14 px-2 py-1 text-center border border-gray-300 rounded text-sm"
+                            className="w-14 px-2 py-1 text-center bg-input border border-border text-foreground rounded text-sm"
                             min="0"
                             max={stock}
                           />
