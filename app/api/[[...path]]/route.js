@@ -446,7 +446,7 @@ async function handleRoute(request, { params }) {
         .project({ _id: 0 }) // Exclude MongoDB _id
         .limit(1000) // Limit to prevent performance issues
         .toArray();
-      return handleCORS(NextResponse.json({ products: products }));
+      return handleCORS(NextResponse.json({ success: true, products: products }));
     }
 
     // ==================== ORDER ROUTES ====================
