@@ -307,3 +307,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Initial implementation complete for Balajee Trade Link B2B wholesale portal. All features implemented including: JWT authentication, product listing, cart system (localStorage), order placement, admin dashboard with product/order management, contact form, and all frontend pages with responsive design. Sample data auto-seeded with 9 products and admin user (admin@balajee.com / admin123). Need comprehensive backend API testing for all endpoints with authentication flows."
+  - agent: "main"
+    message: "✅ MAJOR UPDATE: Successfully imported 576 products from Excel file with dual-warehouse pricing. Products now have correct SKUs and names from 'Report_from_Balajee_Trade_Link_LLC.xlsx'. Maspeth pricing: $12/120 units, Jessup pricing: $10/80 units. Also added warehouse contact information to contact page and footer (Maspeth: 58-06 57th Road, Maspeth, NY 11378, Phone: 347-475-4299 | Jessup: 1318 Sen Robert Mellow Dr, Jessup, PA 18434)."
