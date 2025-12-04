@@ -437,6 +437,37 @@ async function handleRoute(request, { params }) {
       return handleCORS(NextResponse.json({ token, user: userWithoutPassword }));
     }
 
+    // ==================== PROFILE ROUTES ====================
+    
+    // PUT /api/profile/update - Update user profile
+    if (route === '/profile/update' && method === 'PUT') {
+      const token = getTokenFromHeader(request);
+      const decoded = verifyToken(token);
+
+      if (!decoded) {
+        return handleCORS(NextResponse.json({ error: 'Unauthorized' }, { status: 401 }));
+      }
+
+      const body = await request.json();
+      const { name, storeName, address, phone } = body;
+
+      const updateData = {
+        name,
+        storeName,
+        company: storeName, // Keep for backward compatibility
+        address,
+        phone,
+        updatedAt: new Date(),
+      };
+
+      await db.collection('users').updateOne(
+        { id: decoded.id },
+        { $set: updateData }
+      );
+
+      return handleCORS(NextResponse.json({ success: true, message: 'Profile updated successfully' }));
+    }
+
     // ==================== PRODUCT ROUTES ====================
     
     // GET /api/products - Public
