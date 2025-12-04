@@ -95,7 +95,7 @@ export default function Navbar() {
                 <Button variant="ghost" size="icon" onClick={handleLogout}>
                   <LogOut className="h-5 w-5" />
                 </Button>
-                <span className="text-sm text-gray-600">{user.name}</span>
+                <span className="text-sm text-foreground font-medium">{user.name}</span>
               </>
             ) : (
               <>
