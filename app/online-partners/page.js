@@ -53,13 +53,6 @@ export default function OnlinePartners() {
                       src={partner.logo}
                       alt={partner.name}
                       className="max-w-full max-h-full object-contain"
-                      crossOrigin="anonymous"
-                      loading="lazy"
-                      onError={(e) => {
-                        console.error(`Failed to load image: ${partner.logo}`);
-                        e.target.style.display = 'none';
-                        e.target.parentElement.innerHTML = `<div class="text-center"><p class="text-gray-600 font-semibold">${partner.name}</p></div>`;
-                      }}
                     />
                   </div>
 
