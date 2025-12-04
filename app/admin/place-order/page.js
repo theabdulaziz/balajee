@@ -183,11 +183,7 @@ export default function AdminPlaceOrder() {
                         onChange={(e) => setSelectedWarehouse(e.target.value)}
                         className="mr-2"
                       />
-                      <span className="text-sm text-foreground">
-                        <strong>Maspeth, NY</strong>
-                        <br/>
-                        <span className="text-xs text-muted-foreground">58-06 57th Road, Maspeth NY 11378</span>
-                      </span>
+                      <span className="text-sm text-foreground font-medium">Maspeth, NY</span>
                     </label>
                     <label className="flex items-center">
                       <input
@@ -197,11 +193,7 @@ export default function AdminPlaceOrder() {
                         onChange={(e) => setSelectedWarehouse(e.target.value)}
                         className="mr-2"
                       />
-                      <span className="text-sm text-foreground">
-                        <strong>Jessup, MD</strong>
-                        <br/>
-                        <span className="text-xs text-muted-foreground">Contact: 347-475-4299</span>
-                      </span>
+                      <span className="text-sm text-foreground font-medium">Jessup, PA</span>
                     </label>
                   </div>
                 </div>
