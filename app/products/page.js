@@ -13,6 +13,7 @@ export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [category, setCategory] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
 
   useEffect(() => {
     fetchProducts();
