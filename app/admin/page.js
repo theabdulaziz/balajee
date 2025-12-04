@@ -343,13 +343,43 @@ function AdminContent() {
                           />
                         </div>
                         <div className="md:col-span-2">
-                          <Label htmlFor="imageUrl">Image URL</Label>
-                          <Input
-                            id="imageUrl"
-                            value={formData.imageUrl}
-                            onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                            placeholder="https://example.com/image.jpg"
-                          />
+                          <Label htmlFor="imageUpload">Product Image</Label>
+                          <div className="space-y-2">
+                            <Input
+                              id="imageUpload"
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onloadend = () => {
+                                    setFormData({ ...formData, imageUrl: reader.result });
+                                  };
+                                  reader.readAsDataURL(file);
+                                }
+                              }}
+                              className="cursor-pointer"
+                            />
+                            {formData.imageUrl && (
+                              <div className="mt-2">
+                                <img 
+                                  src={formData.imageUrl} 
+                                  alt="Preview" 
+                                  className="w-32 h-32 object-cover rounded-lg border border-border"
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  className="mt-2"
+                                  onClick={() => setFormData({ ...formData, imageUrl: '' })}
+                                >
+                                  Remove Image
+                                </Button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
