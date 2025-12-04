@@ -154,39 +154,39 @@ export default function ProductsPage() {
                       <div className="flex-grow min-w-0">
                         <div className="flex justify-between items-start mb-1">
                           <div className="flex-grow pr-2">
-                            <h3 className="text-lg font-semibold text-gray-900 truncate">{product.name}</h3>
+                            <h3 className="text-lg font-semibold text-foreground truncate">{product.name}</h3>
                             {product.sku && (
-                              <p className="text-xs text-gray-500">SKU: {product.sku}</p>
+                              <p className="text-xs text-muted-foreground">SKU: {product.sku}</p>
                             )}
                           </div>
-                          <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium whitespace-nowrap">
+                          <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-medium whitespace-nowrap">
                             {product.category}
                           </span>
                         </div>
                         <div className="flex flex-wrap gap-1 mb-2">
                           {product.brand && (
-                            <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs">
+                            <span className="px-2 py-0.5 bg-muted text-muted-foreground rounded text-xs">
                               {product.brand}
                             </span>
                           )}
                           {product.unitSize && (
-                            <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs">
+                            <span className="px-2 py-0.5 bg-muted text-muted-foreground rounded text-xs">
                               {product.unitSize}
                             </span>
                           )}
                           {product.stock > 0 ? (
-                            <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs">
+                            <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs">
                               Stock: {product.stock}
                             </span>
                           ) : (
-                            <span className="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs">
+                            <span className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs">
                               Out of Stock
                             </span>
                           )}
                         </div>
                       </div>
                       <div className="flex items-center gap-3 flex-shrink-0">
-                        <span className="text-xl font-bold text-green-600 whitespace-nowrap">
+                        <span className="text-xl font-bold text-primary whitespace-nowrap">
                           ${product.price?.toFixed(2) || '0.00'}
                         </span>
                         <div className="flex items-center gap-2">
