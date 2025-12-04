@@ -297,7 +297,7 @@ export default function AdminPlaceOrder() {
                               }
                             }}
                             disabled={!stock || stock <= 0 || currentQty >= stock}
-                            className="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-bold"
+                            className="px-2 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed text-sm font-bold"
                           >
                             +
                           </button>
@@ -311,11 +311,11 @@ export default function AdminPlaceOrder() {
 
             {/* Order Summary Section */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-                <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+              <div className="bg-card border border-border rounded-lg shadow-md p-6 sticky top-4">
+                <h2 className="text-xl font-semibold mb-4 text-foreground">Order Summary</h2>
                 
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Select Customer</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">Select Customer</label>
                   <select
                     value={selectedCustomer}
                     onChange={(e) => setSelectedCustomer(e.target.value)}
