@@ -17,9 +17,20 @@ export default function AdminPlaceOrder() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
+    const userStr = localStorage.getItem('user');
     
-    if (!token || role !== 'admin') {
+    if (!token || !userStr) {
+      router.push('/login');
+      return;
+    }
+
+    try {
+      const user = JSON.parse(userStr);
+      if (user.role !== 'admin') {
+        router.push('/');
+        return;
+      }
+    } catch (error) {
       router.push('/login');
       return;
     }
