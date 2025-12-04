@@ -19,10 +19,11 @@ export default function HeroBanner() {
             <img 
               src="/logo-btl.jpg" 
               alt="Balajee Trade Link Logo" 
-              className="h-full w-full object-contain drop-shadow-2xl"
+              className="h-full w-full object-contain"
               style={{ 
-                filter: 'drop-shadow(0 25px 25px rgba(0,0,0,0.8)) brightness(1.1) contrast(1.2)',
-                mixBlendMode: 'lighten'
+                filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.5))',
+                mixBlendMode: 'multiply',
+                opacity: '0.95'
               }}
             />
           </div>
