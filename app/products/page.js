@@ -149,7 +149,9 @@ export default function ProductsPage() {
             ) : (
               <div className="space-y-3">
                 {filteredProducts.map((product) => {
-                  const [quantity, setQuantity] = React.useState(1);
+                  const quantity = quantities[product.id] || 1;
+                  const setQuantity = (val) => setQuantities({ ...quantities, [product.id]: val });
+                  
                   return (
                     <div key={product.id} className="bg-white rounded-lg shadow-md p-4 flex flex-col md:flex-row gap-4 items-center">
                       <img
