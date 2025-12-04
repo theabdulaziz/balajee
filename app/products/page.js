@@ -68,16 +68,7 @@ export default function ProductsPage() {
   const categories = ['all', ...new Set(products.map(p => p.category))];
 
   return (
-    <div 
-      className="min-h-screen"
-      style={{
-        backgroundImage: 'url(https://images.unsplash.com/photo-1717082778340-6bcc3a24f33d?w=1600)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      <div className="bg-black bg-opacity-60 min-h-screen">
+    <div className="min-h-screen">
         <div className="container mx-auto px-4 py-12">
           <h1 className="text-4xl font-bold text-white mb-8 text-center">Our Products</h1>
 
