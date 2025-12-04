@@ -16,11 +16,29 @@ function DashboardContent() {
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showOrderDetails, setShowOrderDetails] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [profileData, setProfileData] = useState({
+    name: '',
+    storeName: '',
+    address: '',
+    phone: '',
+    email: ''
+  });
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
     if (userData) {
-      setUser(JSON.parse(userData));
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      setProfileData({
+        name: parsedUser.name || '',
+        storeName: parsedUser.storeName || parsedUser.company || '',
+        address: parsedUser.address || '',
+        phone: parsedUser.phone || '',
+        email: parsedUser.email || ''
+      });
     }
     fetchOrders();
   }, []);
