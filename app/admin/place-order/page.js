@@ -262,7 +262,6 @@ export default function AdminPlaceOrder() {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }
