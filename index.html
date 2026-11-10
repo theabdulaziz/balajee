@@ -489,11 +489,16 @@ pages.products.after = async () => {
     if (f.length > shown.length) box.insertAdjacentHTML('beforeend', `<div class="more"><button class="btn outline" id="more">Show more (${f.length - shown.length} remaining)</button></div>`);
     const m = document.getElementById('more'); if (m) m.onclick = () => { pState.limit += 48; draw(); };
     box.querySelectorAll('[data-id]').forEach(el => {
-      const p = all.find(x => x.id === el.dataset.id); if (!p.available) return; const inp = el.querySelector('input'), dec = el.querySelector('.dec'), inc = el.querySelector('.inc'), add = el.querySelector('.add'), lbl = add.querySelector('span');
-      const setQ = v => { v = Math.max(1, Math.min(v || 1, MAXQ)); inp.value = v; dec.disabled = v <= 1; inc.disabled = v >= MAXQ; if (lbl) lbl.textContent = `Add ${v} to Cart`; };
+      const p = all.find(x => x.id === el.dataset.id); if (!p.available) return; const inp = el.querySelector('input'), dec = el.querySelector('.dec'), inc = el.querySelector('.inc'), add = el.querySelector('.add'); let lbl = add.querySelector('span');
+      const inCart = () => (mem.cart.find(i => i.id === p.id) || {}).quantity || 0;
+      const paint = () => { const n = inCart(); add.classList.toggle('added', n > 0);
+        if (lbl) { add.innerHTML = n ? `${I('shopping-cart')}<span>Added ✓ (${n} in cart)</span>` : `${I('shopping-cart')}<span>Add ${inp.value} to Cart</span>`; lbl = add.querySelector('span'); }
+        else add.textContent = n ? `Added ✓ (${n})` : 'Add';
+        add.title = n ? 'Click to add more' : ''; };
+      const setQ = v => { v = Math.max(1, Math.min(v || 1, MAXQ)); inp.value = v; dec.disabled = v <= 1; inc.disabled = v >= MAXQ; if (!inCart()) paint(); };
       dec.onclick = () => setQ(+inp.value - 1); inc.onclick = () => setQ(+inp.value + 1); inp.onchange = () => setQ(parseInt(inp.value));
-      add.onclick = () => { const q = +inp.value; addToCart(p, q); add.classList.add('added'); const old = add.innerHTML; add.innerHTML = lbl ? `${I('shopping-cart')}<span>Added ✓</span>` : 'Added ✓';
-        setTimeout(() => { add.classList.remove('added'); add.innerHTML = old; const nl = add.querySelector('span'); if (nl) nl.textContent = 'Add 1 to Cart'; setQ(1); }, 900); };
+      add.onclick = () => { addToCart(p, +inp.value); setQ(1); paint(); };
+      paint();
     });
   };
   document.getElementById('q').oninput = e => { pState.q = e.target.value; pState.limit = 48; draw(); };
