@@ -432,7 +432,7 @@ pages.home = () => `
 
 /* products */
 const MAXQ = 999, UM_LABEL = { CS:'Case', DZ:'Dozen', EA:'Each' };
-let PRODUCTS = null, pState = { q:'', cat:'all', view: store.get('view2','list'), limit: 48, onlyAvail: store.get('onlyAvail', false), sort: store.get('sort','asc') };
+let PRODUCTS = null, pState = { q:'', cat:'all', view: store.get('view2','list'), limit: 48, onlyAvail: store.get('onlyAvail2', true), sort: store.get('sort','asc') };
 const chipsFor = p => `${p.sku?`<span class="chip">SKU ${esc(p.sku)}</span>`:''}${p.available&&p.um?`<span class="chip">U/M: ${UM_LABEL[p.um]||p.um}</span>`:''}${p.limited&&p.available?'<span class="chip lim">Limited stock</span>':''}${p.festival&&p.available?'<span class="chip fest">Deepawali / Tihar special</span>':''}`;
 async function loadProducts(){ if (PRODUCTS) return PRODUCTS; const r = await fetch('products.json'); PRODUCTS = await r.json(); return PRODUCTS; }
 function addToCart(p, qty){
@@ -511,7 +511,7 @@ pages.products.after = async () => {
   document.getElementById('q').oninput = e => { pState.q = e.target.value; pState.limit = 48; draw(); };
   sel.onchange = e => { pState.cat = e.target.value; pState.limit = 48; draw(); };
   document.getElementById('sort').onchange = e => { pState.sort = e.target.value; store.set('sort', pState.sort); pState.limit = 48; draw(); };
-  document.getElementById('onlyAvail').onchange = e => { pState.onlyAvail = e.target.checked; store.set('onlyAvail', pState.onlyAvail); pState.limit = 48; draw(); };
+  document.getElementById('onlyAvail').onchange = e => { pState.onlyAvail = e.target.checked; store.set('onlyAvail2', pState.onlyAvail); pState.limit = 48; draw(); };
   document.getElementById('vgrid').onclick = () => { pState.view='grid'; store.set('view2','grid'); render(); };
   document.getElementById('vlist').onclick = () => { pState.view='list'; store.set('view2','list'); render(); };
   draw();
