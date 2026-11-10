@@ -150,7 +150,7 @@ footer .sm{font-size:.875rem}
 .page{padding-block:3rem}
 .filters{padding:1.5rem;margin-bottom:2rem}
 .filter-row{display:flex;flex-direction:column;gap:1rem}
-@media (min-width:768px){.filter-row{flex-direction:row}.filter-row select{width:12rem}}
+@media (min-width:768px){.filter-row{flex-direction:row}.filter-row select{width:12rem}.filter-row #sort{width:11rem}}
 .search{position:relative;flex:1;min-width:0}
 .search .icon{position:absolute;left:.75rem;top:.6rem;width:1.1rem;height:1.1rem;color:var(--muted-fg)}
 .search input{padding-left:2.5rem}
@@ -415,7 +415,7 @@ pages.home = () => `
 
 /* products */
 const MAXQ = 999, UM_LABEL = { CS:'Case', DZ:'Dozen', EA:'Each' };
-let PRODUCTS = null, pState = { q:'', cat:'all', view: store.get('view','grid'), limit: 48, onlyAvail: store.get('onlyAvail', false) };
+let PRODUCTS = null, pState = { q:'', cat:'all', view: store.get('view','grid'), limit: 48, onlyAvail: store.get('onlyAvail', false), sort: store.get('sort','asc') };
 const chipsFor = p => `${p.sku?`<span class="chip">SKU ${esc(p.sku)}</span>`:''}${p.available&&p.um?`<span class="chip">U/M: ${UM_LABEL[p.um]||p.um}</span>`:''}${p.limited&&p.available?'<span class="chip lim">Limited stock</span>':''}${p.festival&&p.available?'<span class="chip fest">Deepawali / Tihar special</span>':''}`;
 async function loadProducts(){ if (PRODUCTS) return PRODUCTS; const r = await fetch('products.json'); PRODUCTS = await r.json(); return PRODUCTS; }
 function addToCart(p, qty){
@@ -431,6 +431,7 @@ pages.products = () => `
     <div class="filter-row">
       <div class="search">${I('search')}<input class="inp" id="q" placeholder="Search by product name, SKU, or description..." value="${esc(pState.q)}" aria-label="Search products"></div>
       <select class="inp" id="cat" aria-label="Category"></select>
+      <select class="inp" id="sort" aria-label="Sort by SKU"><option value="asc" ${pState.sort==='asc'?'selected':''}>SKU: Low to High</option><option value="desc" ${pState.sort==='desc'?'selected':''}>SKU: High to Low</option></select>
       <div class="view-btns">
         <button class="btn icon-btn ${pState.view==='grid'?'':'outline'}" id="vgrid" title="Grid View" aria-label="Grid view">${I('grid')}</button>
         <button class="btn icon-btn ${pState.view==='list'?'':'outline'}" id="vlist" title="List View" aria-label="List view">${I('list')}</button>
@@ -450,7 +451,7 @@ pages.products.after = async () => {
   sel.innerHTML = cats.map(c => `<option value="${esc(c)}" ${c===pState.cat?'selected':''}>${c==='all'?'All Categories':esc(c)}</option>`).join('');
   const draw = () => {
     const q = pState.q.toLowerCase();
-    const f = all.filter(p => (!q || p.name.toLowerCase().includes(q) || (p.sku||'').includes(q)) && (pState.cat==='all' || p.category===pState.cat) && (!pState.onlyAvail || p.available));
+    const f = all.filter(p => (!q || p.name.toLowerCase().includes(q) || (p.sku||'').includes(q)) && (pState.cat==='all' || p.category===pState.cat) && (!pState.onlyAvail || p.available)).sort((a, b) => (pState.sort === 'desc' ? -1 : 1) * String(a.sku||'').localeCompare(String(b.sku||''), undefined, { numeric: true }));
     document.getElementById('count').textContent = `Showing ${f.length} of ${all.length} products · ${f.filter(p=>p.available).length} available to order`;
     const box = document.getElementById('plist');
     if (!f.length) { box.innerHTML = `<div class="card empty"><p>No products found matching your criteria</p><button class="btn outline" id="clr">Clear Filters</button></div>`;
@@ -487,6 +488,7 @@ pages.products.after = async () => {
   };
   document.getElementById('q').oninput = e => { pState.q = e.target.value; pState.limit = 48; draw(); };
   sel.onchange = e => { pState.cat = e.target.value; pState.limit = 48; draw(); };
+  document.getElementById('sort').onchange = e => { pState.sort = e.target.value; store.set('sort', pState.sort); pState.limit = 48; draw(); };
   document.getElementById('onlyAvail').onchange = e => { pState.onlyAvail = e.target.checked; store.set('onlyAvail', pState.onlyAvail); pState.limit = 48; draw(); };
   document.getElementById('vgrid').onclick = () => { pState.view='grid'; store.set('view','grid'); render(); };
   document.getElementById('vlist').onclick = () => { pState.view='list'; store.set('view','list'); render(); };
