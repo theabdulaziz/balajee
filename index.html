@@ -258,10 +258,17 @@ input[type=number]::-webkit-inner-spin-button{opacity:.5}
 .cart-ov{background:rgba(0,0,0,.7);min-height:100vh;padding-block:3rem}
 .cart-grid{display:grid;gap:2rem;grid-template-columns:1fr;align-items:start}.cart-grid>.stack{align-content:start}
 @media (min-width:1024px){.cart-grid{grid-template-columns:2fr 1fr}}
-.citem{padding:1.5rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
-.citem img{width:6rem;height:6rem;object-fit:cover;border-radius:.25rem}
-.citem .info{flex:1;min-width:10rem}
-.citem h3{font-size:1.125rem;font-weight:600}
+.cart-list{overflow:hidden}
+.cart-head{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.25rem;border-bottom:1px solid var(--border);font-weight:600}
+.cart-head .muted{font-weight:400;font-size:.875rem}
+.cart-cols{display:grid;grid-template-columns:3.5rem minmax(0,1fr) auto;gap:1rem;padding:.6rem 1.25rem;border-bottom:1px solid var(--border);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted-fg)}
+.citem{display:grid;grid-template-columns:3.5rem minmax(0,1fr) auto;gap:1rem;align-items:center;padding:.75rem 1.25rem;border-bottom:1px solid var(--border)}
+.citem:last-child{border-bottom:0}
+.citem img{width:3.5rem;height:3.5rem;object-fit:cover;border-radius:.375rem}
+.citem .info{min-width:0}
+.citem h3{font-size:1rem;font-weight:600;overflow-wrap:anywhere}
+.cq .btn.icon-btn{width:2rem;height:2rem}.cq input.inp{width:3.5rem;height:2rem;padding:0}
+@media (max-width:640px){.cart-cols{display:none}.citem{grid-template-columns:3rem minmax(0,1fr);gap:.5rem .75rem;padding:.75rem 1rem}.citem img{width:3rem;height:3rem}.citem .cq{grid-column:2;justify-content:flex-start}}
 .cq{display:flex;align-items:center;gap:.5rem}
 .cq input{width:4rem;text-align:center}
 .sum-row{display:flex;justify-content:space-between}
@@ -576,8 +583,10 @@ pages.cart = () => {
   const items = mem.cart;
   const body = !items.length
     ? `<div class="card center" style="padding-block:3rem"><div style="color:var(--muted-fg)">${I('bag','')}</div><p class="muted" style="font-size:1.25rem;margin:1rem 0">Your cart is empty</p><a class="btn" href="#products">Continue Shopping</a></div>`
-    : `<div class="cart-grid"><div class="stack">${items.map(it => `
-        <div class="card citem" data-id="${it.id}"><img src="${it.img||PLACEHOLDER}" alt="${esc(it.name)}">
+    : `<div class="cart-grid"><div class="card cart-list">
+        <div class="cart-head"><span>Items in your order</span><span class="muted">${items.length} product${items.length===1?'':'s'}</span></div>
+        <div class="cart-cols"><span></span><span>Product</span><span>Quantity</span></div>${items.map(it => `
+        <div class="citem" data-id="${it.id}"><img src="${it.img||PLACEHOLDER}" alt="${esc(it.name)}">
           <div class="info"><h3>${esc(it.name)}</h3><div class="chips" style="margin-top:.35rem">${it.sku?`<span class="chip">SKU ${esc(it.sku)}</span>`:''}${it.um?`<span class="chip">U/M: ${UM_LABEL[it.um]||it.um}</span>`:''}</div></div>
           <div class="cq"><button class="btn outline icon-btn dec" aria-label="Decrease" ${it.quantity<=1?'disabled':''}>${I('minus')}</button><input class="inp" value="${it.quantity}" readonly aria-label="Quantity"><button class="btn outline icon-btn inc" aria-label="Increase" ${it.quantity>=MAXQ?'disabled':''}>${I('plus')}</button><button class="btn danger icon-btn rm" aria-label="Remove">${I('trash')}</button></div>
         </div>`).join('')}</div>
@@ -600,10 +609,10 @@ pages.cart.after = () => {
     mem.cart = mem.cart.filter(i => by[i.id] && by[i.id].available).map(i => ({ ...i, name: by[i.id].name, um: by[i.id].um }));
     if (JSON.stringify(mem.cart) !== before) { save('cart'); if (route() === 'cart') render(); toast('Your cart was updated to match current availability'); } }).catch(() => {}); }
   document.querySelectorAll('.citem').forEach(el => {
-    const it = mem.cart.find(i => i.id === el.dataset.id);
-    el.querySelector('.dec').onclick = () => { it.quantity = Math.max(1, it.quantity - 1); save('cart'); render(); };
-    el.querySelector('.inc').onclick = () => { it.quantity = Math.min(MAXQ, it.quantity + 1); save('cart'); render(); };
-    el.querySelector('.rm').onclick = () => { mem.cart = mem.cart.filter(i => i.id !== it.id); save('cart'); render(); };
+    const id = el.dataset.id, cur = () => mem.cart.find(i => i.id === id);
+    el.querySelector('.dec').onclick = () => { const it = cur(); if (!it) return; it.quantity = Math.max(1, it.quantity - 1); save('cart'); render(); };
+    el.querySelector('.inc').onclick = () => { const it = cur(); if (!it) return; it.quantity = Math.min(MAXQ, it.quantity + 1); save('cart'); render(); };
+    el.querySelector('.rm').onclick = () => { mem.cart = mem.cart.filter(i => i.id !== id); save('cart'); render(); };
   });
   const f = document.getElementById('oform');
   if (f) f.onsubmit = e => { e.preventDefault(); placeOrder(); };
