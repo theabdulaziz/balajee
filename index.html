@@ -193,7 +193,9 @@ input[type=number]::-webkit-inner-spin-button{opacity:.5}
 @media (min-width:768px){.lrow img{width:8rem;height:8rem}}
 .lrow .info{flex:1;min-width:0;width:100%}
 .lrow .top{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.25rem}
-.lrow h3{font-size:1.125rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lrow h3{font-size:1.125rem;font-weight:600;overflow-wrap:anywhere}
+.list>.lrow{min-width:0}
+@media (max-width:767px){.lrow{flex-direction:row;flex-wrap:wrap;align-items:flex-start;gap:.75rem;padding:.75rem}.lrow img{width:4.5rem;height:4.5rem}.lrow .info{flex:1;width:auto}.lrow h3{font-size:1rem}.lrow .top{flex-direction:column;gap:.35rem}.lq{width:100%;justify-content:flex-end}}
 .cat{padding:.25rem .5rem;background:var(--green-bg);color:var(--green);border-radius:999px;font-size:.75rem;font-weight:500;white-space:nowrap}
 .chips{display:flex;flex-wrap:wrap;gap:.25rem}
 .chip{padding:.1rem .5rem;background:var(--muted);color:var(--muted-fg);border-radius:.25rem;font-size:.75rem}
@@ -423,7 +425,7 @@ pages.home = () => `
 
 /* products */
 const MAXQ = 999, UM_LABEL = { CS:'Case', DZ:'Dozen', EA:'Each' };
-let PRODUCTS = null, pState = { q:'', cat:'all', view: store.get('view','grid'), limit: 48, onlyAvail: store.get('onlyAvail', false), sort: store.get('sort','asc') };
+let PRODUCTS = null, pState = { q:'', cat:'all', view: store.get('view2','list'), limit: 48, onlyAvail: store.get('onlyAvail', false), sort: store.get('sort','asc') };
 const chipsFor = p => `${p.sku?`<span class="chip">SKU ${esc(p.sku)}</span>`:''}${p.available&&p.um?`<span class="chip">U/M: ${UM_LABEL[p.um]||p.um}</span>`:''}${p.limited&&p.available?'<span class="chip lim">Limited stock</span>':''}${p.festival&&p.available?'<span class="chip fest">Deepawali / Tihar special</span>':''}`;
 async function loadProducts(){ if (PRODUCTS) return PRODUCTS; const r = await fetch('products.json'); PRODUCTS = await r.json(); return PRODUCTS; }
 function addToCart(p, qty){
@@ -498,8 +500,8 @@ pages.products.after = async () => {
   sel.onchange = e => { pState.cat = e.target.value; pState.limit = 48; draw(); };
   document.getElementById('sort').onchange = e => { pState.sort = e.target.value; store.set('sort', pState.sort); pState.limit = 48; draw(); };
   document.getElementById('onlyAvail').onchange = e => { pState.onlyAvail = e.target.checked; store.set('onlyAvail', pState.onlyAvail); pState.limit = 48; draw(); };
-  document.getElementById('vgrid').onclick = () => { pState.view='grid'; store.set('view','grid'); render(); };
-  document.getElementById('vlist').onclick = () => { pState.view='list'; store.set('view','list'); render(); };
+  document.getElementById('vgrid').onclick = () => { pState.view='grid'; store.set('view2','grid'); render(); };
+  document.getElementById('vlist').onclick = () => { pState.view='list'; store.set('view2','list'); render(); };
   draw();
 };
 
