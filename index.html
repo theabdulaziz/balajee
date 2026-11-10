@@ -174,6 +174,11 @@ footer .sm{font-size:.875rem}
 input[type=number]::-webkit-inner-spin-button{opacity:.5}
 .pcard .foot-btn{padding:0 1rem 1rem}
 .added{background:hsl(142 70% 35%)!important}
+.chip.lim{background:hsla(38,92%,50%,.18);color:hsl(38 92% 62%)}.chip.fest{background:var(--primary-10);color:var(--primary)}
+.na-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:2;display:flex;align-items:center;justify-content:center;border-radius:var(--r)}
+.na-overlay span{background:var(--red);color:var(--white);padding:.6rem 1.25rem;border-radius:var(--r);font-weight:700}
+.pcard,.lrow{position:relative}.pcard.na,.lrow.na{opacity:.7}
+.avail-toggle{display:flex;align-items:center;gap:.5rem;font-size:.875rem;color:var(--muted-fg);cursor:pointer}
 .list{display:grid;gap:.75rem}
 .lrow{padding:1rem;display:flex;flex-direction:column;gap:1rem;align-items:center}
 @media (min-width:768px){.lrow{flex-direction:row}}
@@ -408,11 +413,14 @@ pages.home = () => `
   <div class="btn-row"><a class="btn lg" href="#products">Start an Order</a><a class="btn lg white" href="#products">Browse Products</a></div></div></section>`;
 
 /* products */
-let PRODUCTS = null, pState = { q:'', cat:'all', view: store.get('view','grid'), limit: 48 };
+const MAXQ = 999, UM_LABEL = { CS:'Case', DZ:'Dozen', EA:'Each' };
+let PRODUCTS = null, pState = { q:'', cat:'all', view: store.get('view','grid'), limit: 48, onlyAvail: store.get('onlyAvail', false) };
+const chipsFor = p => `${p.sku?`<span class="chip">SKU ${esc(p.sku)}</span>`:''}${p.available&&p.um?`<span class="chip">U/M: ${UM_LABEL[p.um]||p.um}</span>`:''}${p.limited&&p.available?'<span class="chip lim">Limited stock</span>':''}${p.festival&&p.available?'<span class="chip fest">Deepawali / Tihar special</span>':''}`;
 async function loadProducts(){ if (PRODUCTS) return PRODUCTS; const r = await fetch('products.json'); PRODUCTS = await r.json(); return PRODUCTS; }
 function addToCart(p, qty){
   const ex = mem.cart.find(i => i.id === p.id);
-  if (ex) ex.quantity = Math.min(ex.quantity + qty, p.stock || 9999); else mem.cart.push({ id:p.id, sku:p.sku, name:p.name, description:p.description, img:p.img, stock:p.stock, quantity:qty });
+  if (!p.available) return;
+  if (ex) ex.quantity = Math.min(ex.quantity + qty, MAXQ); else mem.cart.push({ id:p.id, sku:p.sku, name:p.name, img:p.img, um:p.um, quantity:qty });
   save('cart'); renderNav(route());
 }
 pages.products = () => `
@@ -427,7 +435,10 @@ pages.products = () => `
         <button class="btn icon-btn ${pState.view==='list'?'':'outline'}" id="vlist" title="List View" aria-label="List view">${I('list')}</button>
       </div>
     </div>
-    <div class="muted" id="count" style="margin-top:1rem;font-size:.875rem">Loading products…</div>
+    <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;align-items:center;justify-content:space-between">
+      <div class="muted" id="count" style="font-size:.875rem">Loading products…</div>
+      <label class="avail-toggle" for="onlyAvail"><input type="checkbox" id="onlyAvail" ${pState.onlyAvail?'checked':''}> Show only available items</label>
+    </div>
   </div>
   <div id="plist"><div class="center" style="padding-block:3rem"><div class="spin"></div><p style="margin-top:1rem">Loading products...</p></div></div>
 </div>`;
@@ -438,34 +449,36 @@ pages.products.after = async () => {
   sel.innerHTML = cats.map(c => `<option value="${esc(c)}" ${c===pState.cat?'selected':''}>${c==='all'?'All Categories':esc(c)}</option>`).join('');
   const draw = () => {
     const q = pState.q.toLowerCase();
-    const f = all.filter(p => (!q || p.name.toLowerCase().includes(q) || (p.description||'').toLowerCase().includes(q) || (p.sku||'').includes(q)) && (pState.cat==='all' || p.category===pState.cat));
-    document.getElementById('count').textContent = `Showing ${f.length} of ${all.length} products`;
+    const f = all.filter(p => (!q || p.name.toLowerCase().includes(q) || (p.sku||'').includes(q)) && (pState.cat==='all' || p.category===pState.cat) && (!pState.onlyAvail || p.available));
+    document.getElementById('count').textContent = `Showing ${f.length} of ${all.length} products · ${f.filter(p=>p.available).length} available to order`;
     const box = document.getElementById('plist');
     if (!f.length) { box.innerHTML = `<div class="card empty"><p>No products found matching your criteria</p><button class="btn outline" id="clr">Clear Filters</button></div>`;
       document.getElementById('clr').onclick = () => { pState.q=''; pState.cat='all'; document.getElementById('q').value=''; sel.value='all'; draw(); }; return; }
     const shown = f.slice(0, pState.limit);
     if (pState.view === 'grid') {
       box.innerHTML = `<div class="grid">${shown.map(p => `
-        <div class="card pcard" data-id="${p.id}">
+        <div class="card pcard${p.available?'':' na'}" data-id="${p.id}">
+          ${p.available?'':'<div class="na-overlay"><span>Not Available</span></div>'}
           <div class="pimg"><img loading="lazy" src="${p.img||PLACEHOLDER}" alt="${esc(p.name)}"></div>
-          <div class="body"><h3>${esc(p.name)}</h3><p class="clamp">${esc(p.description)}</p>
-            <div class="qty">Qty:<div class="qty-box"><button class="btn ghost icon-btn dec" aria-label="Decrease" disabled>${I('minus')}</button><input type="number" min="1" max="${p.stock}" value="1" aria-label="Quantity"><button class="btn ghost icon-btn inc" aria-label="Increase">${I('plus')}</button></div></div></div>
-          <div class="foot-btn"><button class="btn full add">${I('shopping-cart')}<span>Add 1 to Cart</span></button></div>
+          <div class="body"><h3>${esc(p.name)}</h3><div class="chips" style="margin-bottom:.75rem">${chipsFor(p)}</div>
+            ${p.available?`<div class="qty">Qty${p.um?` (${UM_LABEL[p.um]||p.um})`:''}:<div class="qty-box"><button class="btn ghost icon-btn dec" aria-label="Decrease" disabled>${I('minus')}</button><input type="number" min="1" max="${MAXQ}" value="1" aria-label="Quantity"><button class="btn ghost icon-btn inc" aria-label="Increase">${I('plus')}</button></div></div>`:''}</div>
+          ${p.available?`<div class="foot-btn"><button class="btn full add">${I('shopping-cart')}<span>Add 1 to Cart</span></button></div>`:''}
         </div>`).join('')}</div>`;
     } else {
       box.innerHTML = `<div class="list">${shown.map(p => `
-        <div class="card lrow" data-id="${p.id}">
+        <div class="card lrow${p.available?'':' na'}" data-id="${p.id}">
+          ${p.available?'':'<div class="na-overlay"><span>Not Available</span></div>'}
           <img loading="lazy" src="${p.img||'img/placeholder.jpg'}" alt="${esc(p.name)}">
-          <div class="info"><div class="top"><div style="min-width:0"><h3>${esc(p.name)}</h3>${p.sku?`<p class="muted" style="font-size:.75rem">SKU: ${esc(p.sku)}</p>`:''}</div><span class="cat">${esc(p.category)}</span></div>
-            <div class="chips">${p.brand?`<span class="chip">${esc(p.brand)}</span>`:''}${p.unitSize?`<span class="chip">${esc(p.unitSize)}</span>`:''}</div></div>
-          <div class="lq"><button class="s dec" aria-label="Decrease">-</button><input type="number" min="1" value="1" aria-label="Quantity"><button class="s inc" aria-label="Increase">+</button><button class="btn add">Add</button></div>
+          <div class="info"><div class="top"><div style="min-width:0"><h3>${esc(p.name)}</h3></div><span class="cat">${esc(p.category)}</span></div>
+            <div class="chips">${chipsFor(p)}</div></div>
+          ${p.available?`<div class="lq"><button class="s dec" aria-label="Decrease">-</button><input type="number" min="1" value="1" aria-label="Quantity"><button class="s inc" aria-label="Increase">+</button><button class="btn add">Add</button></div>`:''}
         </div>`).join('')}</div>`;
     }
     if (f.length > shown.length) box.insertAdjacentHTML('beforeend', `<div class="more"><button class="btn outline" id="more">Show more (${f.length - shown.length} remaining)</button></div>`);
     const m = document.getElementById('more'); if (m) m.onclick = () => { pState.limit += 48; draw(); };
     box.querySelectorAll('[data-id]').forEach(el => {
-      const p = all.find(x => x.id === el.dataset.id), inp = el.querySelector('input'), dec = el.querySelector('.dec'), inc = el.querySelector('.inc'), add = el.querySelector('.add'), lbl = add.querySelector('span');
-      const setQ = v => { v = Math.max(1, Math.min(v || 1, p.stock || 9999)); inp.value = v; dec.disabled = v <= 1; inc.disabled = v >= (p.stock || 9999); if (lbl) lbl.textContent = `Add ${v} to Cart`; };
+      const p = all.find(x => x.id === el.dataset.id); if (!p.available) return; const inp = el.querySelector('input'), dec = el.querySelector('.dec'), inc = el.querySelector('.inc'), add = el.querySelector('.add'), lbl = add.querySelector('span');
+      const setQ = v => { v = Math.max(1, Math.min(v || 1, MAXQ)); inp.value = v; dec.disabled = v <= 1; inc.disabled = v >= MAXQ; if (lbl) lbl.textContent = `Add ${v} to Cart`; };
       dec.onclick = () => setQ(+inp.value - 1); inc.onclick = () => setQ(+inp.value + 1); inp.onchange = () => setQ(parseInt(inp.value));
       add.onclick = () => { const q = +inp.value; addToCart(p, q); add.classList.add('added'); const old = add.innerHTML; add.innerHTML = lbl ? `${I('shopping-cart')}<span>Added ✓</span>` : 'Added ✓';
         setTimeout(() => { add.classList.remove('added'); add.innerHTML = old; const nl = add.querySelector('span'); if (nl) nl.textContent = 'Add 1 to Cart'; setQ(1); }, 900); };
@@ -473,6 +486,7 @@ pages.products.after = async () => {
   };
   document.getElementById('q').oninput = e => { pState.q = e.target.value; pState.limit = 48; draw(); };
   sel.onchange = e => { pState.cat = e.target.value; pState.limit = 48; draw(); };
+  document.getElementById('onlyAvail').onchange = e => { pState.onlyAvail = e.target.checked; store.set('onlyAvail', pState.onlyAvail); pState.limit = 48; draw(); };
   document.getElementById('vgrid').onclick = () => { pState.view='grid'; store.set('view','grid'); render(); };
   document.getElementById('vlist').onclick = () => { pState.view='list'; store.set('view','list'); render(); };
   draw();
@@ -546,8 +560,8 @@ pages.cart = () => {
     ? `<div class="card center" style="padding-block:3rem"><div style="color:var(--muted-fg)">${I('bag','')}</div><p class="muted" style="font-size:1.25rem;margin:1rem 0">Your cart is empty</p><a class="btn" href="#products">Continue Shopping</a></div>`
     : `<div class="cart-grid"><div class="stack">${items.map(it => `
         <div class="card citem" data-id="${it.id}"><img src="${it.img||PLACEHOLDER}" alt="${esc(it.name)}">
-          <div class="info"><h3>${esc(it.name)}</h3><p class="muted" style="font-size:.875rem">${esc(it.description)}</p></div>
-          <div class="cq"><button class="btn outline icon-btn dec" aria-label="Decrease" ${it.quantity<=1?'disabled':''}>${I('minus')}</button><input class="inp" value="${it.quantity}" readonly aria-label="Quantity"><button class="btn outline icon-btn inc" aria-label="Increase" ${it.quantity>=it.stock?'disabled':''}>${I('plus')}</button><button class="btn danger icon-btn rm" aria-label="Remove">${I('trash')}</button></div>
+          <div class="info"><h3>${esc(it.name)}</h3><div class="chips" style="margin-top:.35rem">${it.sku?`<span class="chip">SKU ${esc(it.sku)}</span>`:''}${it.um?`<span class="chip">U/M: ${UM_LABEL[it.um]||it.um}</span>`:''}</div></div>
+          <div class="cq"><button class="btn outline icon-btn dec" aria-label="Decrease" ${it.quantity<=1?'disabled':''}>${I('minus')}</button><input class="inp" value="${it.quantity}" readonly aria-label="Quantity"><button class="btn outline icon-btn inc" aria-label="Increase" ${it.quantity>=MAXQ?'disabled':''}>${I('plus')}</button><button class="btn danger icon-btn rm" aria-label="Remove">${I('trash')}</button></div>
         </div>`).join('')}</div>
         <div><div class="card"><div class="card-h"><div class="card-t">Order Summary</div></div>
           <div class="card-c stack"><div class="sum-row"><span class="muted">Total Items</span><b>${cartCount()}</b></div>
@@ -556,16 +570,21 @@ pages.cart = () => {
             <div style="font-weight:600">Your details</div><div id="oerr"></div>
             <div class="field"><label for="o-name">Your Name *</label><input class="inp" id="o-name" autocomplete="name" required></div>
             <div class="field"><label for="o-store">Store Name *</label><input class="inp" id="o-store" autocomplete="organization" required></div>
+            <div class="field"><label for="o-email">Email *</label><input class="inp" id="o-email" type="email" autocomplete="email" placeholder="you@yourstore.com" required></div>
+            <div class="field"><label for="o-phone">Phone Number *</label><input class="inp" id="o-phone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" pattern="[0-9()+.\- ]{7,20}" title="Enter a phone number, e.g. 570-562-2777" required></div>
             <div class="field"><label for="o-address">Store Address *</label><textarea class="inp" id="o-address" rows="3" autocomplete="street-address" placeholder="Street, City, State ZIP" required></textarea></div>
             <button class="btn full lg" id="place" type="submit">Place Order</button>
           </form></div></div></div>`;
   return `<div class="cart-bg" style="background-image:url(img/cart.jpg)"><div class="cart-ov"><div class="container"><h1 class="page-title" style="margin-bottom:2rem">Shopping Cart</h1>${body}</div></div></div>`;
 };
 pages.cart.after = () => {
+  if (mem.cart.length && !pages.cart.synced) { loadProducts().then(all => { pages.cart.synced = true; const by = Object.fromEntries(all.map(p => [p.id, p])); const before = JSON.stringify(mem.cart);
+    mem.cart = mem.cart.filter(i => by[i.id] && by[i.id].available).map(i => ({ ...i, name: by[i.id].name, um: by[i.id].um }));
+    if (JSON.stringify(mem.cart) !== before) { save('cart'); if (route() === 'cart') render(); toast('Your cart was updated to match current availability'); } }).catch(() => {}); }
   document.querySelectorAll('.citem').forEach(el => {
     const it = mem.cart.find(i => i.id === el.dataset.id);
     el.querySelector('.dec').onclick = () => { it.quantity = Math.max(1, it.quantity - 1); save('cart'); render(); };
-    el.querySelector('.inc').onclick = () => { it.quantity = Math.min(it.stock || 9999, it.quantity + 1); save('cart'); render(); };
+    el.querySelector('.inc').onclick = () => { it.quantity = Math.min(MAXQ, it.quantity + 1); save('cart'); render(); };
     el.querySelector('.rm').onclick = () => { mem.cart = mem.cart.filter(i => i.id !== it.id); save('cart'); render(); };
   });
   const f = document.getElementById('oform');
@@ -573,7 +592,6 @@ pages.cart.after = () => {
 };
 
 /* ---------- order: PDF + email ---------- */
-const UM_DEFAULT = 'CS';
 let lastOrder = null;
 function newOrderNo(){ const d = new Date(); const p = n => String(n).padStart(2,'0'); return `BTL-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`; }
 function buildPdf(o){
@@ -591,9 +609,9 @@ function buildPdf(o){
   doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(20); doc.text('ORDERED BY', M, 104);
   doc.setFont('helvetica', 'normal');
   const addr = doc.splitTextToSize(o.address, 300);
-  doc.text([`Name: ${o.name}`, `Store: ${o.store}`, 'Address:'], M, 120);
-  doc.text(addr, M + 48, 148);
-  const startY = 148 + addr.length * 12 + 16;
+  doc.text([`Name: ${o.name}`, `Store: ${o.store}`, `Email: ${o.email}`, `Phone: ${o.phone}`, 'Address:'], M, 120);
+  doc.text(addr, M + 48, 168);
+  const startY = 168 + addr.length * 12 + 16;
   doc.autoTable({
     startY, margin: { left: M, right: M },
     head: [['SKU', 'Product Description', 'U/M', 'Qty Ordered']],
@@ -618,7 +636,7 @@ function sendOrderEmail(o, blob){
     const add = (n, v) => { const i = document.createElement('input'); i.type = 'hidden'; i.name = n; i.value = v; form.appendChild(i); };
     add('_subject', `New order ${o.no} - ${o.store}`);
     add('_template', 'table'); add('_captcha', 'false');
-    add('Order number', o.no); add('Customer name', o.name); add('Store name', o.store); add('Address', o.address);
+    add('Order number', o.no); add('Customer name', o.name); add('Store name', o.store); add('Email', o.email); add('Phone', o.phone); add('Address', o.address); add('_replyto', o.email);
     add('Items', o.items.map(i => `${i.sku || '-'} | ${i.name} | ${i.um} | ${i.quantity}`).join('\n'));
     add('Total cases', String(o.items.reduce((s, i) => s + i.quantity, 0)));
     const file = document.createElement('input'); file.type = 'file'; file.name = 'attachment';
@@ -637,8 +655,8 @@ async function placeOrder(){
   err.innerHTML = '';
   if (!mem.cart.length) return;
   if (!window.jspdf || !window.jspdf.jsPDF) { err.innerHTML = `<div class="alert err">The order form couldn't load. Refresh the page and try again, or call 570-562-2777.</div>`; return; }
-  const o = { no: newOrderNo(), date: new Date(), name: v('o-name'), store: v('o-store'), address: v('o-address'),
-              items: mem.cart.map(i => ({ sku: i.sku, name: i.name, um: i.um || UM_DEFAULT, quantity: i.quantity })) };
+  const o = { no: newOrderNo(), date: new Date(), name: v('o-name'), store: v('o-store'), email: v('o-email'), phone: v('o-phone'), address: v('o-address'),
+              items: mem.cart.map(i => ({ sku: i.sku, name: i.name, um: i.um || '', quantity: i.quantity })) };
   btn.disabled = true; btn.textContent = 'Sending order…';
   const doc = buildPdf(o), blob = doc.output('blob');
   await sendOrderEmail(o, blob);
